@@ -1,0 +1,71 @@
+ref link:
+
+Với Nodejs:
+https://docs.docker.com/get-started/02_our_app/?fbclid=IwAR2v2qYcWvM_hhH8RjzBAO_epJZsh_Rl5AI4wIpirI9oQUGBGdL0AI5AtHk
+Với Spring:
+https://spring.io/guides/topicals/spring-boot-docker/
+
+Steps:
+Trên Windows
+
+1. Vào thư mục chứa app
+vd: cd \path\to\app
+2. tạo một Dockerfile rỗng
+$ type nul > Dockerfile
+3. Dùng một text editor để thay đổi nội dung Dockerfile được tạo ra
+	
+	Đối với Nodejs
+
+	# syntax=docker/dockerfile:1
+   
+	FROM node:18 #phiên bản LTS (long term support của node)
+	WORKDIR /app #đường dẫn mà bạn muốn thiết lập
+	COPY . . # bundle hết app source,
+		 # hoặc đối với js, có thể dùng COPY package*.json ./
+	RUN npm install 
+	CMD ["node", "src/index.js"]
+	EXPOSE 3000 #port mà bạn muốn docker sử dụng để app giao tiếp
+		    #có thể thay đổi số 3000 thành PORT khác
+
+	Đối với Spring (java):
+
+	FROM eclipse-temurin:17-jdk-alpine
+	VOLUME /tmp
+	ARG JAR_FILE=target/*.jar
+	COPY ${JAR_FILE} app.jar
+	ENTRYPOINT ["java","-jar","/app.jar"]
+
+	Đoạn chương trình trên được sử dụng khi bạn muốn thay đổi
+	build system, {JAR_FILE} được nhận vào trong khi gọi tại cmd
+
+	Ngoài ra, khi đã xác định được build system, ta có thể ghi như sau:
+	tuy nhiên, cần thực hiện:
+	1. Dò (tìm) góc phải trên cụm từ Maven
+	2. Bấm vào Maven
+	3. click vào Lifecycle
+	   chọn "clean"
+	4. Double click vào "install"
+
+	trong file Dockerfile	
+
+	FROM eclipse-temurin:17-jdk-alpine
+	COPY target/*.jar app.jar
+	ENTRYPOINT ["java","-jar","/app.jar"]	
+
+4. open your docker desktop - run your docker
+
+5. build your image
+	docker build . -t <your image's name>
+	or
+	docker build -t <your image's name>
+	-t: to tags your image
+
+	ở bước này chúng ta sẽ thấy cmd tải các files
+
+6.
+Cách 1: vào Docker desktop để chạy image container được tạo
+Cách 2: gõ lệnh docker run -dp 127.0.0.1:<port1>:<port2> <your created image's name>
+Sau đó kiểm tra bằng các gọi localhost:<port bạn đã đăng ký> để kiểm tra
+
+Lưu ý: port1 là port chạy trên máy bạn
+	port2 là port của container
