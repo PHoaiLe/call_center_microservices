@@ -7,7 +7,8 @@ import org.springframework.boot.SpringApplication;
 @SpringBootApplication
 public class BookingService
 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         SpringApplication.run(BookingService.class, args);
     }
 }

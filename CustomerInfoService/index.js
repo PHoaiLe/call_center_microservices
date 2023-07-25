@@ -12,7 +12,12 @@ app.listen(PORT, (error) =>{
     }
 );
 
-app.get("/", function(req, res, next)
+app.get("/", function(req, res)
+{
+    res.json("Hello this is Customer-Info Home")
+})
+
+app.get("/customer_info", function(req, res)
 {
     res.json("Hello, this is Customer-Info Service")
 })

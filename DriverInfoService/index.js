@@ -2,7 +2,14 @@ const express = require('express');
   
 const app = express();
 const PORT = 8086;
-  
+
+const mainRouter = require("./components/router");
+
+app.use(express.json());
+
+
+app.use("/driver_info", mainRouter);
+
 app.listen(PORT, (error) =>{
     if(!error)
         console.log("Server is Successfully Running," 
@@ -12,9 +19,5 @@ app.listen(PORT, (error) =>{
     }
 );
 
-app.get("/", function(req, res, next)
-{
-    res.json("Hello, this is Driver-Info Service")
-})
 
 module.exports = app
