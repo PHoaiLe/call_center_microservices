@@ -1,6 +1,10 @@
+
 server:
   port: 8082
 
 spring:
   application:
-    name: BookingMain
+    name: BookingService
+  kafka:
+    bootstrap-servers: localhost:29092
+

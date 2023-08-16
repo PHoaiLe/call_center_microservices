@@ -1,0 +1,8 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: Receiver
+  kafka:
+    bootstrap-servers: localhost:29092

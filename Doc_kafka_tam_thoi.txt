@@ -1,0 +1,7 @@
+1. vào container đang chạy kafka
+2. chọn terminal
+3. gõ cd /usr/bin
+3. gõ kafka-console-producer.sh 
+--topic <ten_topic> --bootstrap-server localhost:<port>
+
+Lúc này chúng ta đang theo dõi partition có <topic>

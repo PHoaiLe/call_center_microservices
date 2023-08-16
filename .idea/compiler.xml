@@ -7,9 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Receiver" />
         <module name="NotificationService" />
         <module name="BookingService" />
         <module name="MonitoringService" />
+        <module name="VerificationService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
