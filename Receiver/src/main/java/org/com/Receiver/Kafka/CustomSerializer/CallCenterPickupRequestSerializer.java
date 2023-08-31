@@ -2,7 +2,7 @@ package org.com.Receiver.Kafka.CustomSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
-import org.com.Receiver.Request.CallCenterPickupRequest;
+import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
 
 import java.util.Map;
 

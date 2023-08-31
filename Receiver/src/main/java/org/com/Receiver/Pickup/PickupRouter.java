@@ -1,8 +1,8 @@
 package org.com.Receiver.Pickup;
 
 
-import org.com.Receiver.Request.CallCenterPickupRequest;
-import org.com.Receiver.Request.ClientAppPickupRequest;
+import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
+import org.com.Receiver.Request.Requests.ClientAppPickupRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -3,7 +3,7 @@ package org.com.Receiver.Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.com.Receiver.Kafka.CustomSerializer.CallCenterPickupRequestSerializer;
-import org.com.Receiver.Request.CallCenterPickupRequest;
+import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

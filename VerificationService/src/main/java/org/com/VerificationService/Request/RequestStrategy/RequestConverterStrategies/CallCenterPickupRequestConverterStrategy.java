@@ -2,11 +2,14 @@ package org.com.VerificationService.Request.RequestStrategy.RequestConverterStra
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.com.VerificationService.Request.CallCenterPickupRequest;
+import org.com.VerificationService.Request.Constants.RequestTypes;
+import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 
 public class CallCenterPickupRequestConverterStrategy implements RequestConverterStrategy
 {
+
+    private final String referenceRequestType = RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST;
 
     @Override
     public byte[] fromObjectToBytes(Object object) {
@@ -48,4 +51,11 @@ public class CallCenterPickupRequestConverterStrategy implements RequestConverte
         }
         return callCenterPickupRequest;
     }
+
+    @Override
+    public String getReferenceRequestType()
+    {
+        return referenceRequestType;
+    }
+
 }

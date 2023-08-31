@@ -1,8 +1,8 @@
 package org.com.VerificationService.Handler;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.com.VerificationService.Interfaces.Verifier;
-import org.com.VerificationService.Request.ClientAppPickupRequest;
+import org.com.VerificationService.Handler.Interfaces.Verifier;
+import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
 
 public class VerificationHandler
 {

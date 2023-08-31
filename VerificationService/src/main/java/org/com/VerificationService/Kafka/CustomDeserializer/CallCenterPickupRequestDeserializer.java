@@ -1,12 +1,9 @@
 package org.com.VerificationService.Kafka.CustomDeserializer;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.com.VerificationService.Request.CallCenterPickupRequest;
+import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class CallCenterPickupRequestDeserializer implements Deserializer

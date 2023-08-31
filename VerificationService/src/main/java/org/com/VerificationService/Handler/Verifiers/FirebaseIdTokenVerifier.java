@@ -2,8 +2,8 @@ package org.com.VerificationService.Handler.Verifiers;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import org.com.VerificationService.Interfaces.Verifier;
-import org.com.VerificationService.Request.ClientAppPickupRequest;
+import org.com.VerificationService.Handler.Interfaces.Verifier;
+import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
 //
 //Firebase Authentication sessions are long lived.
 //Every time a user signs in, the user credentials are sent to the Firebase Authentication backend and exchanged for a Firebase ID token (a JWT) and refresh token.

@@ -1,9 +1,8 @@
 package org.com.Receiver.Pickup;
 
 import org.com.Receiver.Kafka.Constants.KafkaTopics;
-import org.com.Receiver.Request.CallCenterPickupRequest;
-import org.com.Receiver.Request.ClientAppPickupRequest;
-import org.com.Receiver.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
+import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
+import org.com.Receiver.Request.Requests.ClientAppPickupRequest;
 import org.com.Receiver.Request.RequestStrategy.RequestConverterHandler;
 import org.com.Receiver.Request.RequestWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

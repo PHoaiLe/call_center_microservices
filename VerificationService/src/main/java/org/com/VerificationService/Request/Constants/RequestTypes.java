@@ -1,4 +1,4 @@
-package org.com.VerificationService.Constants;
+package org.com.VerificationService.Request.Constants;
 
 public class RequestTypes
 {

@@ -1,4 +1,4 @@
-package org.com.Receiver.Constants;
+package org.com.Receiver.Request.Constants;
 
 public class RequestTypes
 {

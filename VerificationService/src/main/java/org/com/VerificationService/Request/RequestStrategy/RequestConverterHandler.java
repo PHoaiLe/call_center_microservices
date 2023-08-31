@@ -10,31 +10,26 @@ public class RequestConverterHandler
 
     public byte[] fromObjectToBytes(Object object)
     {
+        if(strategy == null)
+        {
+            throw new NullPointerException("strategy is null reference. Please set strategy first!");
+        }
         return strategy.fromObjectToBytes(object);
     }
 
     public Object fromBytesToObject(byte[] bytes)
     {
+        if(strategy == null)
+        {
+            throw new NullPointerException("strategy is null reference. Please set strategy first!");
+        }
         return strategy.fromByteToObject(bytes);
     }
 
     //setter of strategy
 
-    public void setCallCenterPickupRequestConverterStrategy()
+    public void setStrategy(RequestConverterStrategy requestConverterStrategy)
     {
-        if(strategy == null)
-        {
-            throw new NullPointerException("strategy is null reference. Please set strategy first!");
-        }
-        strategy = new CallCenterPickupRequestConverterStrategy();
-    }
-
-    public void setClientAppPickupRequestConverterStrategy()
-    {
-        if(strategy == null)
-        {
-            throw new NullPointerException("strategy is null reference. Please set strategy first!");
-        }
-        strategy = new ClientAppPickupRequestConverterStrategy();
+        strategy = requestConverterStrategy;
     }
 }

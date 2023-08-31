@@ -13,4 +13,9 @@ public class KafkaTopicConfig
         return TopicBuilder.name(KafkaTopics.DATA_ROOM).build();
     }
 
+    public NewTopic Locating()
+    {
+        return TopicBuilder.name(KafkaTopics.LOCATING).build();
+    }
+
 }

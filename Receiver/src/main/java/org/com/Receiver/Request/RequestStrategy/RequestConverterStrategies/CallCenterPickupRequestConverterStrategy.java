@@ -3,7 +3,7 @@ package org.com.Receiver.Request.RequestStrategy.RequestConverterStrategies;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.Receiver.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
-import org.com.Receiver.Request.CallCenterPickupRequest;
+import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
 
 public class CallCenterPickupRequestConverterStrategy implements RequestConverterStrategy
 {

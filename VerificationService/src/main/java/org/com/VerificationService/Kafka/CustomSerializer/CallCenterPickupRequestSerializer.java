@@ -1,10 +1,8 @@
 package org.com.VerificationService.Kafka.CustomSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Serializer;
-import org.com.VerificationService.Request.CallCenterPickupRequest;
-import org.com.VerificationService.Request.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 
 import java.util.Map;
 

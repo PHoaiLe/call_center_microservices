@@ -1,11 +1,13 @@
 package org.com.VerificationService.Request.RequestStrategy.RequestConverterStrategies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.com.VerificationService.Request.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Constants.RequestTypes;
+import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 
 public class ClientAppPickupRequestConverterStrategy implements RequestConverterStrategy
 {
+    private final String referenceRequestType = RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST;
 
     @Override
     public byte[] fromObjectToBytes(Object object) {
@@ -46,5 +48,11 @@ public class ClientAppPickupRequestConverterStrategy implements RequestConverter
             return null;
         }
         return clientAppPickupRequest;
+    }
+
+    @Override
+    public String getReferenceRequestType()
+    {
+        return referenceRequestType;
     }
 }

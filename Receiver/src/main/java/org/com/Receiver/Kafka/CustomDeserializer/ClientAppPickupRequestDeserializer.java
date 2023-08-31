@@ -1,12 +1,9 @@
 package org.com.Receiver.Kafka.CustomDeserializer;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.com.Receiver.Request.ClientAppPickupRequest;
+import org.com.Receiver.Request.Requests.ClientAppPickupRequest;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class ClientAppPickupRequestDeserializer implements Deserializer

@@ -2,7 +2,7 @@ package org.com.Receiver.Request.RequestStrategy.RequestConverterStrategies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.Receiver.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
-import org.com.Receiver.Request.ClientAppPickupRequest;
+import org.com.Receiver.Request.Requests.ClientAppPickupRequest;
 
 public class ClientAppPickupRequestConverterStrategy implements RequestConverterStrategy
 {

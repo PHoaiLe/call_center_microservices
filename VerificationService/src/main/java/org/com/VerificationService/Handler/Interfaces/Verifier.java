@@ -1,7 +1,7 @@
-package org.com.VerificationService.Interfaces;
+package org.com.VerificationService.Handler.Interfaces;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.com.VerificationService.Request.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
 
 public interface Verifier
 {

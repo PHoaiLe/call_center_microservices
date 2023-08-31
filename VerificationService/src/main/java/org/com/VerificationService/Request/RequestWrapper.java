@@ -34,18 +34,5 @@ public class RequestWrapper implements Serializable
                 '}';
     }
 
-//    public byte[] fromObjectToBytes(RequestWrapper wrapper)
-//    {
-//        byte[] bytes = null;
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try
-//        {
-//            bytes = objectMapper.writeValueAsBytes(wrapper);
-//            return bytes;
-//        } catch (JsonProcessingException e) {
-//            return bytes;
-//        }
-//    }
-
 
 }
