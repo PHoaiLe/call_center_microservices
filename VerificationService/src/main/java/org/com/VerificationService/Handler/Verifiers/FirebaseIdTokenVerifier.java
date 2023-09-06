@@ -3,6 +3,7 @@ package org.com.VerificationService.Handler.Verifiers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import org.com.VerificationService.Handler.Interfaces.Verifier;
+import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
 //
 //Firebase Authentication sessions are long lived.
@@ -54,5 +55,11 @@ public class FirebaseIdTokenVerifier implements Verifier
         {
             return false;
         }
+    }
+
+    @Override
+    public boolean execute(CallCenterPickupRequest request)
+    {
+        return true;
     }
 }

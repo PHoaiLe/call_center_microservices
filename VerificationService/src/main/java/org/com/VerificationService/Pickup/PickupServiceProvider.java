@@ -1,10 +1,16 @@
 package org.com.VerificationService.Pickup;
 
+import org.com.VerificationService.Handler.VerificationHandler;
+import org.com.VerificationService.Kafka.Constants.KafkaTopics;
+import org.com.VerificationService.Kafka.ProducerConfig.LocatingRequestKafkaProducerConfig;
 import org.com.VerificationService.Pickup.FunctionInterface.GetRunnable_BytesParam_Function;
 import org.com.VerificationService.Request.Constants.RequestTypes;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.VerificationService.Request.RequestStrategy.RequestConverterStrategyProvider;
+import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.LocatingRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +23,10 @@ public class PickupServiceProvider
 {
     //HashMap<RequestType, AsyncTask-Service-Provider> serviceProvider;
     private HashMap<String, GetRunnable_BytesParam_Function> serviceProvider;
-    private RequestConverterStrategyProvider converterStrategyProvider;
     private ThreadPoolExecutor executor;
+
+    @Autowired
+    private KafkaTemplate<String, LocatingRequest> locatingRequestKafkaTemplate;
 
     public PickupServiceProvider()
     {
@@ -34,7 +42,6 @@ public class PickupServiceProvider
         (for example, timeout parameters) may be created using ThreadPoolExecutor constructors.*/
         executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
-        converterStrategyProvider = new RequestConverterStrategyProvider();
 
         initialize();
     }
@@ -50,6 +57,11 @@ public class PickupServiceProvider
     public void execute(String requestType, byte[] payload)
     {
         GetRunnable_BytesParam_Function function = serviceProvider.get(requestType);
+        if(function == null)
+        {
+            //wrong requestType
+            return;
+        }
         Runnable runnable = function.getRunnable(payload);
         try
         {
@@ -60,7 +72,6 @@ public class PickupServiceProvider
             System.out.println(ex);
             return;
         }
-
     }
 
 
@@ -75,9 +86,35 @@ public class PickupServiceProvider
             public void run()
             {
                 String requestType = RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST;
+                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
+                RequestConverterStrategyProvider converterStrategyProvider = new RequestConverterStrategyProvider();
+
                 RequestConverterStrategy converterStrategy = converterStrategyProvider.getRequestConverterStrategy(requestType);
                 ClientAppPickupRequest clientAppPickupRequest = (ClientAppPickupRequest) converterStrategy.fromByteToObject(payload);
                 System.out.println("ClientApp Runnable: " + clientAppPickupRequest);
+                //boolean check = verificationServiceProvider.getVerificationHandler().handle(clientAppPickupRequest);
+
+                //for testing
+                boolean check = true;
+                if(check == true)
+                {
+                    LocatingRequestKafkaProducerConfig producerConfig = new LocatingRequestKafkaProducerConfig();
+                    //TODO: send to locating_queue
+                    LocatingRequest request = new LocatingRequest();
+                    request.setStartLongitude(clientAppPickupRequest.getStartLongitude());
+                    request.setStartLatitude(clientAppPickupRequest.getStartLatitude());
+                    request.setEndLongitude(clientAppPickupRequest.getEndLongitude());
+                    request.setEndLatitude(clientAppPickupRequest.getEndLatitude());
+                    request.setStartAddress(clientAppPickupRequest.getStartAddress());
+                    request.setEndAddress(clientAppPickupRequest.getEndAddress());
+                    request.setVehicle(clientAppPickupRequest.getVehicle());
+                    request.setCustomerName(clientAppPickupRequest.getName());
+                    request.setPhone(clientAppPickupRequest.getPhone());
+
+                    System.out.println("Check = true");
+                    locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, request);
+                    System.out.println("after send...");
+                }
             }
         };
         return task;
@@ -88,7 +125,32 @@ public class PickupServiceProvider
         Runnable task = new Runnable() {
             @Override
             public void run() {
+                String requestType = RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST;
+                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
+                RequestConverterStrategyProvider converterStrategyProvider = new RequestConverterStrategyProvider();
 
+                RequestConverterStrategy converterStrategy = converterStrategyProvider.getRequestConverterStrategy(requestType);
+                CallCenterPickupRequest callCenterPickupRequest = (CallCenterPickupRequest) converterStrategy.fromByteToObject(payload);
+                System.out.println("Callcenter Runnable: " + callCenterPickupRequest);
+                boolean check = verificationServiceProvider.getVerificationHandler().handle(callCenterPickupRequest);
+                if(check == true)
+                {
+                    //TODO: send to locating_queue
+                    LocatingRequestKafkaProducerConfig producerConfig = new LocatingRequestKafkaProducerConfig();
+                    //TODO: send to locating_queue
+                    LocatingRequest request = new LocatingRequest();
+                    request.setStartLongitude(callCenterPickupRequest.getStartLongitude());
+                    request.setStartLatitude(callCenterPickupRequest.getStartLatitude());
+                    request.setEndLongitude(callCenterPickupRequest.getEndLongitude());
+                    request.setEndLatitude(callCenterPickupRequest.getEndLatitude());
+                    request.setStartAddress(callCenterPickupRequest.getStartAddress());
+                    request.setEndAddress(callCenterPickupRequest.getEndAddress());
+                    request.setVehicle(callCenterPickupRequest.getVehicle());
+                    request.setCustomerName(callCenterPickupRequest.getName());
+                    request.setPhone(callCenterPickupRequest.getPhone());
+
+                    locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, request);
+                }
             }
         };
         return task;

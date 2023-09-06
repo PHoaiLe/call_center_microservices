@@ -2,7 +2,7 @@ package org.com.LocatingService.Request;
 
 import java.io.Serializable;
 
-public class LocatingRequest implements Serializable
+public class DriverPartitionRequest implements Serializable
 {
     private String startLongitude;
     private String startLatitude;
@@ -13,45 +13,9 @@ public class LocatingRequest implements Serializable
     private String customerName;
     private String phone;
     private String vehicle;
-
-    public LocatingRequest()
-    {
-        startLongitude = "";
-        startLatitude = "";
-        endLongitude = "";
-        endLatitude = "";
-        startAddress = "";
-        endAddress = "";
-        vehicle = "";
-        customerName = "";
-        phone = "";
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-
-    public String getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(String vehicle) {
-        this.vehicle = vehicle;
-    }
-
+    private String time;
+    private String distance;
+    private String cost;
 
     public String getStartLongitude() {
         return startLongitude;
@@ -101,10 +65,57 @@ public class LocatingRequest implements Serializable
         this.endAddress = endAddress;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(String vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
 
     @Override
     public String toString() {
-        return "LocatingRequest{" +
+        return "DriverPartitionRequest{" +
                 "startLongitude='" + startLongitude + '\'' +
                 ", startLatitude='" + startLatitude + '\'' +
                 ", endLongitude='" + endLongitude + '\'' +
@@ -114,6 +125,9 @@ public class LocatingRequest implements Serializable
                 ", customerName='" + customerName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", vehicle='" + vehicle + '\'' +
+                ", time='" + time + '\'' +
+                ", distance='" + distance + '\'' +
+                ", cost='" + cost + '\'' +
                 '}';
     }
 }

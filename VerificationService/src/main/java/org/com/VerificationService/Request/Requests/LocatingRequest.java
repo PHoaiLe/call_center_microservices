@@ -1,4 +1,4 @@
-package org.com.LocatingService.Request;
+package org.com.VerificationService.Request.Requests;
 
 import java.io.Serializable;
 
@@ -27,23 +27,6 @@ public class LocatingRequest implements Serializable
         phone = "";
     }
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-
     public String getVehicle() {
         return vehicle;
     }
@@ -51,7 +34,6 @@ public class LocatingRequest implements Serializable
     public void setVehicle(String vehicle) {
         this.vehicle = vehicle;
     }
-
 
     public String getStartLongitude() {
         return startLongitude;
@@ -99,6 +81,23 @@ public class LocatingRequest implements Serializable
 
     public void setEndAddress(String endAddress) {
         this.endAddress = endAddress;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName)
+    {
+        this.customerName = customerName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 

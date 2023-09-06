@@ -2,6 +2,7 @@ package org.com.VerificationService.Handler;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import org.com.VerificationService.Handler.Interfaces.Verifier;
+import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
 
 public class VerificationHandler
@@ -45,7 +46,32 @@ public class VerificationHandler
 
             return result;
         }
-        catch (FirebaseAuthException ex)
+        catch (Exception ex)
+        {
+            System.out.println(ex);
+            return false;
+        }
+
+    }
+
+    public boolean handle(CallCenterPickupRequest callCenterPickupRequest)
+    {
+        boolean result = false;
+        if(verifier == null)
+        {
+            throw new NullPointerException(this.nullVerifier);
+        }
+        try
+        {
+            result = verifier.execute(callCenterPickupRequest);
+            if(result == true && nextHandler != null)
+            {
+                return nextHandler.handle(callCenterPickupRequest);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
         {
             System.out.println(ex);
             return false;

@@ -17,5 +17,6 @@ public class LocatingRequestListener
         System.out.println(request);
         //TODO: using LocatingServiceProvider to get the result of Geocode API and Direction API
         //TODO: push the result into Contact
+
     }
 }
