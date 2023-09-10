@@ -16,16 +16,16 @@ public class GetCostResponse implements Serializable
     }
 
     private String vehicle;
-    private String duration;
-    private String distance;
-    private String cost;
+    private Double duration;
+    private Double distance;
+    private Double cost;
 
     public GetCostResponse()
     {
         vehicle = "";
-        duration = "";
-        distance = "";
-        cost = "";
+        duration = 0.00;
+        distance = 0.00;
+        cost = 0.00;
     }
 
 
@@ -37,27 +37,27 @@ public class GetCostResponse implements Serializable
         this.vehicle = vehicle;
     }
 
-    public String getDuration() {
+    public Double getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Double duration) {
         this.duration = duration;
     }
 
-    public String getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
-    public String getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 

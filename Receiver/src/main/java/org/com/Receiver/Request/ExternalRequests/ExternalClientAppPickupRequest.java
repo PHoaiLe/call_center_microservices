@@ -14,7 +14,9 @@ public class ExternalClientAppPickupRequest implements Serializable
     private String endAddress;
     private String phone;
     private String vehicle;
-    private String cost;
+    private Double duration;
+    private Double distance;
+    private Double cost;
     private String time;
 
     public ExternalClientAppPickupRequest()
@@ -26,7 +28,9 @@ public class ExternalClientAppPickupRequest implements Serializable
         phone = "";
         vehicle = "";
         time = "";
-        cost = "";
+        cost = 0.00;
+        distance = 0.00;
+        duration = 0.00;
     }
 
 
@@ -94,11 +98,27 @@ public class ExternalClientAppPickupRequest implements Serializable
         this.vehicle = vehicle;
     }
 
-    public String getCost() {
+    public Double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
@@ -121,8 +141,11 @@ public class ExternalClientAppPickupRequest implements Serializable
                 ", endAddress='" + endAddress + '\'' +
                 ", phone='" + phone + '\'' +
                 ", vehicle='" + vehicle + '\'' +
-                ", cost='" + cost + '\'' +
+                ", duration=" + duration +
+                ", distance=" + distance +
+                ", cost=" + cost +
                 ", time='" + time + '\'' +
                 '}';
     }
+
 }

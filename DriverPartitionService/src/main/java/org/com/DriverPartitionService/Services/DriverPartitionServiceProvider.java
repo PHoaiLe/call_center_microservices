@@ -82,7 +82,7 @@ public class DriverPartitionServiceProvider
                 broadcastRequest.setListOfDrivers(listOfDriverPartition);
                 //send broadcastRequest to BroadcastService
                 System.out.println("broadcastRequest: " + broadcastRequest);
-                //broadcastRequestKafkaTemplate.send(KafkaTopics.BROADCAST, broadcastRequest);
+                broadcastRequestKafkaTemplate.send(KafkaTopics.BROADCAST, broadcastRequest);
             }
         };
 

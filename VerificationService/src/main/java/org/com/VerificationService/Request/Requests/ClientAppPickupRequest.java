@@ -8,21 +8,18 @@ import java.io.Serializable;
 
 public class ClientAppPickupRequest implements Serializable
 {
-
     private String idToken;
     private String systemKey;
     private String userId;
     private String requestType;
     private String name;
-
-    //    private String startLongitude;
-//    private String startLatitude;
-//    private String endLongitude;
-//    private String endLatitude;
     private String startAddress;
     private String endAddress;
     private String phone;
     private String vehicle;
+    private Double duration;
+    private Double distance;
+    private Double cost;
     private String time;
 
     public ClientAppPickupRequest()
@@ -30,23 +27,14 @@ public class ClientAppPickupRequest implements Serializable
         requestType = RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST;
         userId = "";
         name = "";
-//        startLongitude = "";
-//        startLatitude = "";
-//        endLongitude = "";
-//        endLatitude = "";
         startAddress = "";
         endAddress = "";
         phone = "";
         vehicle = "";
+        duration = 0.00;
+        distance = 0.00;
+        cost = 0.00;
         time = "";
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getIdToken() {
@@ -65,6 +53,14 @@ public class ClientAppPickupRequest implements Serializable
         this.systemKey = systemKey;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getRequestType() {
         return requestType;
     }
@@ -80,38 +76,6 @@ public class ClientAppPickupRequest implements Serializable
     public void setName(String name) {
         this.name = name;
     }
-
-//    public String getStartLongitude() {
-//        return startLongitude;
-//    }
-//
-//    public void setStartLongitude(String startLongitude) {
-//        this.startLongitude = startLongitude;
-//    }
-//
-//    public String getStartLatitude() {
-//        return startLatitude;
-//    }
-//
-//    public void setStartLatitude(String startLatitude) {
-//        this.startLatitude = startLatitude;
-//    }
-//
-//    public String getEndLongitude() {
-//        return endLongitude;
-//    }
-//
-//    public void setEndLongitude(String endLongitude) {
-//        this.endLongitude = endLongitude;
-//    }
-//
-//    public String getEndLatitude() {
-//        return endLatitude;
-//    }
-//
-//    public void setEndLatitude(String endLatitude) {
-//        this.endLatitude = endLatitude;
-//    }
 
     public String getStartAddress() {
         return startAddress;
@@ -145,6 +109,30 @@ public class ClientAppPickupRequest implements Serializable
         this.vehicle = vehicle;
     }
 
+    public Double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
     public String getTime() {
         return time;
     }
@@ -161,15 +149,15 @@ public class ClientAppPickupRequest implements Serializable
                 ", userId='" + userId + '\'' +
                 ", requestType='" + requestType + '\'' +
                 ", name='" + name + '\'' +
-//                ", startLongitude='" + startLongitude + '\'' +
-//                ", startLatitude='" + startLatitude + '\'' +
-//                ", endLongitude='" + endLongitude + '\'' +
-//                ", endLatitude='" + endLatitude + '\'' +
                 ", startAddress='" + startAddress + '\'' +
                 ", endAddress='" + endAddress + '\'' +
                 ", phone='" + phone + '\'' +
                 ", vehicle='" + vehicle + '\'' +
+                ", duration=" + duration +
+                ", distance=" + distance +
+                ", cost=" + cost +
                 ", time='" + time + '\'' +
                 '}';
     }
+
 }

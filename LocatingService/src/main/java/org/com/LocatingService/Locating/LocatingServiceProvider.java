@@ -140,16 +140,16 @@ public class LocatingServiceProvider
                 List<GetCostResponse> costResponses = new ArrayList<>();
 
                 GetCostResponse twoWheelCostResponse = new GetCostResponse();
-                twoWheelCostResponse.setCost(String.valueOf(costHandler.calculateCostFromDistanceAndDuration(twoWheelProperty.getSummary().getDistance(), twoWheelProperty.getSummary().getDuration(), "MOTO")));
-                twoWheelCostResponse.setDistance(String.valueOf(twoWheelProperty.getSummary().getDistance()));
-                twoWheelCostResponse.setDuration(String.valueOf(twoWheelProperty.getSummary().getDuration()));
+                twoWheelCostResponse.setCost(costHandler.calculateCostFromDistanceAndDuration(twoWheelProperty.getSummary().getDistance(), twoWheelProperty.getSummary().getDuration(), "MOTO"));
+                twoWheelCostResponse.setDistance(twoWheelProperty.getSummary().getDistance());
+                twoWheelCostResponse.setDuration(twoWheelProperty.getSummary().getDuration());
                 twoWheelCostResponse.setVehicle(VehicleTypes.MOTO);
 
                 GetCostResponse fourWheelResponse = new GetCostResponse();
-                fourWheelResponse.setCost(String.valueOf(costHandler.calculateCostFromDistanceAndDuration(fourWheelProperty.getSummary().getDistance(), fourWheelProperty.getSummary().getDuration(), "CAR")));
+                fourWheelResponse.setCost(costHandler.calculateCostFromDistanceAndDuration(fourWheelProperty.getSummary().getDistance(), fourWheelProperty.getSummary().getDuration(), "CAR"));
                 fourWheelResponse.setVehicle(VehicleTypes.CAR);
-                fourWheelResponse.setDuration(String.valueOf(fourWheelProperty.getSummary().getDuration()));
-                fourWheelResponse.setDistance(String.valueOf(fourWheelProperty.getSummary().getDistance()));
+                fourWheelResponse.setDuration(fourWheelProperty.getSummary().getDuration());
+                fourWheelResponse.setDistance(fourWheelProperty.getSummary().getDistance());
 
                 costResponses.add(twoWheelCostResponse);
                 costResponses.add(fourWheelResponse);
@@ -164,6 +164,7 @@ public class LocatingServiceProvider
 
                 //send to NotificationService
                 notificationWrapperKafkaTemplate.send(KafkaTopics.NOTIFICATION, wrapper);
+                System.out.println("after sending...");
             }
         };
 

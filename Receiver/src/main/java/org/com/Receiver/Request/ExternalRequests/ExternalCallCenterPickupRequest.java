@@ -6,31 +6,33 @@ import java.io.Serializable;
 
 public class ExternalCallCenterPickupRequest implements Serializable
 {
-
     private String systemKey;
-    private String callCenterId;
-    private String requestType;
+    private String userId;
     private String name;
     private String startAddress;
     private String endAddress;
     private String phone;
     private String vehicle;
+    private Double duration;
+    private Double distance;
+    private Double cost;
     private String time;
 
 
     public ExternalCallCenterPickupRequest()
     {
         systemKey = "";
-        requestType = RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST;
+        userId = "";
         name = "";
-        callCenterId = "";
         startAddress = "";
         endAddress = "";
         phone = "";
         vehicle = "";
+        duration = 0.00;
+        distance = 0.00;
+        cost = 0.00;
         time = "";
     }
-
 
     public String getSystemKey() {
         return systemKey;
@@ -40,20 +42,12 @@ public class ExternalCallCenterPickupRequest implements Serializable
         this.systemKey = systemKey;
     }
 
-    public String getCallCenterId() {
-        return callCenterId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCallCenterId(String callCenterId) {
-        this.callCenterId = callCenterId;
-    }
-
-    public String getRequestType() {
-        return requestType;
-    }
-
-    public void setRequestType(String requestType) {
-        this.requestType = requestType;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -96,6 +90,30 @@ public class ExternalCallCenterPickupRequest implements Serializable
         this.vehicle = vehicle;
     }
 
+    public Double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
     public String getTime() {
         return time;
     }
@@ -104,18 +122,19 @@ public class ExternalCallCenterPickupRequest implements Serializable
         this.time = time;
     }
 
-
     @Override
     public String toString() {
         return "ExternalCallCenterPickupRequest{" +
                 "systemKey='" + systemKey + '\'' +
-                ", callCenterId='" + callCenterId + '\'' +
-                ", requestType='" + requestType + '\'' +
+                ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", startAddress='" + startAddress + '\'' +
                 ", endAddress='" + endAddress + '\'' +
                 ", phone='" + phone + '\'' +
                 ", vehicle='" + vehicle + '\'' +
+                ", duration=" + duration +
+                ", distance=" + distance +
+                ", cost=" + cost +
                 ", time='" + time + '\'' +
                 '}';
     }

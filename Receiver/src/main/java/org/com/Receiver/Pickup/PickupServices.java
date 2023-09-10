@@ -89,6 +89,7 @@ public class PickupServices {
         requestWrapper.setPayload(converterHandler.fromObjectToBytes(costRequest));
 
         requestWrapperKafkaTemplate.send(KafkaTopics.DATA_ROOM, requestWrapper);
+        System.out.println("after sending ...");
     }
 
 

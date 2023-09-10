@@ -6,43 +6,35 @@ import java.io.Serializable;
 
 public class CallCenterPickupRequest implements Serializable
 {
+
     private String systemKey;
-    private String callCenterId;
     private String requestType;
+    private String userId;
     private String name;
-    //    private String startLongitude;
-//    private String startLatitude;
-//    private String endLongitude;
-//    private String endLatitude;
     private String startAddress;
     private String endAddress;
     private String phone;
     private String vehicle;
+    private Double duration;
+    private Double distance;
+    private Double cost;
     private String time;
 
 
     public CallCenterPickupRequest()
     {
         requestType = RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST;
+        systemKey = "";
+        userId = "";
         name = "";
-        callCenterId = "";
-//        startLongitude = "";
-//        startLatitude = "";
-//        endLongitude = "";
-//        endLatitude = "";
         startAddress = "";
         endAddress = "";
         phone = "";
         vehicle = "";
+        duration = 0.00;
+        distance = 0.00;
+        cost = 0.00;
         time = "";
-    }
-
-    public String getCallCenterId() {
-        return callCenterId;
-    }
-
-    public void setCallCenterId(String callCenterId) {
-        this.callCenterId = callCenterId;
     }
 
     public String getSystemKey() {
@@ -61,6 +53,14 @@ public class CallCenterPickupRequest implements Serializable
         this.requestType = requestType;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getName() {
         return name;
     }
@@ -68,38 +68,6 @@ public class CallCenterPickupRequest implements Serializable
     public void setName(String name) {
         this.name = name;
     }
-
-//    public String getStartLongitude() {
-//        return startLongitude;
-//    }
-//
-//    public void setStartLongitude(String startLongitude) {
-//        this.startLongitude = startLongitude;
-//    }
-//
-//    public String getStartLatitude() {
-//        return startLatitude;
-//    }
-//
-//    public void setStartLatitude(String startLatitude) {
-//        this.startLatitude = startLatitude;
-//    }
-//
-//    public String getEndLongitude() {
-//        return endLongitude;
-//    }
-//
-//    public void setEndLongitude(String endLongitude) {
-//        this.endLongitude = endLongitude;
-//    }
-//
-//    public String getEndLatitude() {
-//        return endLatitude;
-//    }
-//
-//    public void setEndLatitude(String endLatitude) {
-//        this.endLatitude = endLatitude;
-//    }
 
     public String getStartAddress() {
         return startAddress;
@@ -133,6 +101,30 @@ public class CallCenterPickupRequest implements Serializable
         this.vehicle = vehicle;
     }
 
+    public Double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Double duration) {
+        this.duration = duration;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
     public String getTime() {
         return time;
     }
@@ -141,23 +133,20 @@ public class CallCenterPickupRequest implements Serializable
         this.time = time;
     }
 
-
-
     @Override
     public String toString() {
         return "CallCenterPickupRequest{" +
                 "systemKey='" + systemKey + '\'' +
-                ", callCenterId='" + callCenterId + '\'' +
                 ", requestType='" + requestType + '\'' +
+                ", userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
-//                ", startLongitude='" + startLongitude + '\'' +
-//                ", startLatitude='" + startLatitude + '\'' +
-//                ", endLongitude='" + endLongitude + '\'' +
-//                ", endLatitude='" + endLatitude + '\'' +
                 ", startAddress='" + startAddress + '\'' +
                 ", endAddress='" + endAddress + '\'' +
                 ", phone='" + phone + '\'' +
                 ", vehicle='" + vehicle + '\'' +
+                ", duration=" + duration +
+                ", distance=" + distance +
+                ", cost=" + cost +
                 ", time='" + time + '\'' +
                 '}';
     }

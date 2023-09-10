@@ -7,10 +7,7 @@ import org.com.VerificationService.Pickup.FunctionInterface.GetRunnable_BytesPar
 import org.com.VerificationService.Request.Constants.RequestTypes;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.VerificationService.Request.RequestStrategy.RequestConverterStrategyProvider;
-import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
-import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
-import org.com.VerificationService.Request.Requests.GetCostRequest;
-import org.com.VerificationService.Request.Requests.LocatingRequest;
+import org.com.VerificationService.Request.Requests.*;
 import org.com.VerificationService.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -29,6 +26,8 @@ public class PickupServiceProvider
 
     @Autowired
     private KafkaTemplate<String, LocatingRequest> locatingRequestKafkaTemplate;
+    @Autowired
+    private KafkaTemplate<String, DriverPartitionRequest> driverPartitionRequestKafkaTemplate;
 
     public PickupServiceProvider()
     {
@@ -52,8 +51,9 @@ public class PickupServiceProvider
     private void initialize()
     {
         //TODO: Add service providers in here
-        serviceProvider.put(RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST, ClientAppRequestRunnable);
+        serviceProvider.put(RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST, ClientAppNewPickupRequestTask);
         serviceProvider.put(RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST, CallCenterRequestRunnable);
+        serviceProvider.put(RequestTypes.GET_COST_REQUEST, GetCostRequestRunnable);
     }
 
     public void execute(String requestType, byte[] payload)
@@ -65,6 +65,10 @@ public class PickupServiceProvider
             return;
         }
         Runnable runnable = function.getRunnable(payload);
+        if(runnable == null)
+        {
+            return;
+        }
         try
         {
             executor.submit(runnable);
@@ -80,7 +84,7 @@ public class PickupServiceProvider
     //service provided by PickupServiceProvider, omit IF condition for checking requestType variable
 
     //service for handling ClientAppPickupRequest
-    private GetRunnable_BytesParam_Function ClientAppRequestRunnable = (payload) ->
+    private GetRunnable_BytesParam_Function ClientAppNewPickupRequestTask = (payload) ->
     {
         Runnable task = new Runnable()
         {
@@ -88,36 +92,35 @@ public class PickupServiceProvider
             public void run()
             {
                 String requestType = RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST;
-                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
                 RequestConverterStrategyProvider converterStrategyProvider = new RequestConverterStrategyProvider();
 
                 RequestConverterStrategy converterStrategy = converterStrategyProvider.getRequestConverterStrategy(requestType);
                 ClientAppPickupRequest clientAppPickupRequest = (ClientAppPickupRequest) converterStrategy.fromByteToObject(payload);
-                System.out.println("ClientApp Runnable: " + clientAppPickupRequest);
+
+                //for practice
                 //boolean check = verificationServiceProvider.getVerificationHandler().handle(clientAppPickupRequest);
 
                 //for testing
                 boolean check = true;
+
+
                 if(check == true)
                 {
-                    LocatingRequestKafkaProducerConfig producerConfig = new LocatingRequestKafkaProducerConfig();
-                    //TODO: send to locating_queue
-                    LocatingRequest request = new LocatingRequest();
-//                    request.setStartLongitude(clientAppPickupRequest.getStartLongitude());
-//                    request.setStartLatitude(clientAppPickupRequest.getStartLatitude());
-//                    request.setEndLongitude(clientAppPickupRequest.getEndLongitude());
-//                    request.setEndLatitude(clientAppPickupRequest.getEndLatitude());
-                    request.setStartAddress(clientAppPickupRequest.getStartAddress());
-                    request.setEndAddress(clientAppPickupRequest.getEndAddress());
-                    request.setVehicle(clientAppPickupRequest.getVehicle());
-                    request.setCustomerName(clientAppPickupRequest.getName());
-                    request.setPhone(clientAppPickupRequest.getPhone());
-                    request.setUserId(clientAppPickupRequest.getUserId());
-                    request.setRequestType(clientAppPickupRequest.getRequestType());
+                    DriverPartitionRequest driverPartitionRequest = new DriverPartitionRequest();
 
-                    System.out.println("Check = true");
-                    locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, request);
-                    System.out.println("after send...");
+                    //assign value to driverPartitionRequest
+                    driverPartitionRequest.setUserId(clientAppPickupRequest.getUserId());
+                    driverPartitionRequest.setStartAddress(clientAppPickupRequest.getStartAddress());
+                    driverPartitionRequest.setEndAddress(clientAppPickupRequest.getEndAddress());
+                    driverPartitionRequest.setCustomerName(clientAppPickupRequest.getName());
+                    driverPartitionRequest.setPhone(clientAppPickupRequest.getPhone());
+                    driverPartitionRequest.setVehicle(clientAppPickupRequest.getVehicle());
+                    driverPartitionRequest.setDuration(clientAppPickupRequest.getDuration());
+                    driverPartitionRequest.setDistance(clientAppPickupRequest.getDistance());
+                    driverPartitionRequest.setCost(clientAppPickupRequest.getCost());
+
+                    driverPartitionRequestKafkaTemplate.send(KafkaTopics.DRIVER_PARTITION, driverPartitionRequest);
+                    System.out.println("After sending to driver partition");
                 }
             }
         };
@@ -139,23 +142,19 @@ public class PickupServiceProvider
                 boolean check = verificationServiceProvider.getVerificationHandler().handle(callCenterPickupRequest);
                 if(check == true)
                 {
-                    //TODO: send to locating_queue
-                    LocatingRequestKafkaProducerConfig producerConfig = new LocatingRequestKafkaProducerConfig();
-                    //TODO: send to locating_queue
-                    LocatingRequest request = new LocatingRequest();
-//                    request.setStartLongitude(callCenterPickupRequest.getStartLongitude());
-//                    request.setStartLatitude(callCenterPickupRequest.getStartLatitude());
-//                    request.setEndLongitude(callCenterPickupRequest.getEndLongitude());
-//                    request.setEndLatitude(callCenterPickupRequest.getEndLatitude());
+                    DriverPartitionRequest request = new DriverPartitionRequest();
+
+                    request.setUserId(callCenterPickupRequest.getUserId());
                     request.setStartAddress(callCenterPickupRequest.getStartAddress());
                     request.setEndAddress(callCenterPickupRequest.getEndAddress());
-                    request.setVehicle(callCenterPickupRequest.getVehicle());
-//                    request.setCustomerName(callCenterPickupRequest.getName());
+                    request.setCustomerName(callCenterPickupRequest.getName());
                     request.setPhone(callCenterPickupRequest.getPhone());
-                    request.setUserId(callCenterPickupRequest.getCallCenterId());
-                    request.setRequestType(callCenterPickupRequest.getRequestType());
+                    request.setVehicle(callCenterPickupRequest.getVehicle());
+                    request.setDuration(callCenterPickupRequest.getDuration());
+                    request.setDistance(callCenterPickupRequest.getDistance());
+                    request.setCost(callCenterPickupRequest.getCost());
 
-                    locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, request);
+                    driverPartitionRequestKafkaTemplate.send(KafkaTopics.DRIVER_PARTITION, request);
                 }
             }
         };
@@ -173,7 +172,8 @@ public class PickupServiceProvider
 
                 RequestConverterStrategy requestConverterStrategy = requestConverterStrategyProvider.getRequestConverterStrategy(requestType);
                 GetCostRequest getCostRequest = (GetCostRequest) requestConverterStrategy.fromByteToObject(payload);
-                boolean check = verificationServiceProvider.getVerificationHandler().handle(getCostRequest);
+//                boolean check = verificationServiceProvider.getVerificationHandler().handle(getCostRequest);
+                boolean check = true;
                 if(check == true)
                 {
                     LocatingRequest locatingRequest = new LocatingRequest();
@@ -183,6 +183,7 @@ public class PickupServiceProvider
                     locatingRequest.setEndAddress(getCostRequest.getEndAddress());
 
                     locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, locatingRequest);
+                    System.out.println("after sending GetCostRequest...");
                 }
             }
         };

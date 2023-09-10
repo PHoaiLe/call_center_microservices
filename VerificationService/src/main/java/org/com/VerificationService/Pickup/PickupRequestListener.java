@@ -31,6 +31,7 @@ public class PickupRequestListener
             System.out.println("dataRoomListener: null");
             return;
         }
+        System.out.println(requestWrapper);
         pickupServiceProvider.execute(requestWrapper.getRequestType(), requestWrapper.getPayload());
     }
 

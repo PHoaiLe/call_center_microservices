@@ -13,9 +13,9 @@ public class KafkaTopicConfig
         return TopicBuilder.name(KafkaTopics.DATA_ROOM).build();
     }
 
-    public NewTopic Locating()
+    public NewTopic Broadcast()
     {
-        return TopicBuilder.name(KafkaTopics.LOCATING).build();
+        return TopicBuilder.name(KafkaTopics.DRIVER_PARTITION).build();
     }
 
 }

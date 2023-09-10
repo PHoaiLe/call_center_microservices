@@ -1,14 +1,10 @@
-package org.com.LocatingService.Request;
+package org.com.VerificationService.Request.Requests;
 
 import java.io.Serializable;
 
 public class DriverPartitionRequest implements Serializable
 {
     private String userId;
-    private String startLongitude;
-    private String startLatitude;
-    private String endLongitude;
-    private String endLatitude;
     private String startAddress;
     private String endAddress;
     private String customerName;
@@ -24,38 +20,6 @@ public class DriverPartitionRequest implements Serializable
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getStartLongitude() {
-        return startLongitude;
-    }
-
-    public void setStartLongitude(String startLongitude) {
-        this.startLongitude = startLongitude;
-    }
-
-    public String getStartLatitude() {
-        return startLatitude;
-    }
-
-    public void setStartLatitude(String startLatitude) {
-        this.startLatitude = startLatitude;
-    }
-
-    public String getEndLongitude() {
-        return endLongitude;
-    }
-
-    public void setEndLongitude(String endLongitude) {
-        this.endLongitude = endLongitude;
-    }
-
-    public String getEndLatitude() {
-        return endLatitude;
-    }
-
-    public void setEndLatitude(String endLatitude) {
-        this.endLatitude = endLatitude;
     }
 
     public String getStartAddress() {
@@ -126,10 +90,6 @@ public class DriverPartitionRequest implements Serializable
     public String toString() {
         return "DriverPartitionRequest{" +
                 "userId='" + userId + '\'' +
-                ", startLongitude='" + startLongitude + '\'' +
-                ", startLatitude='" + startLatitude + '\'' +
-                ", endLongitude='" + endLongitude + '\'' +
-                ", endLatitude='" + endLatitude + '\'' +
                 ", startAddress='" + startAddress + '\'' +
                 ", endAddress='" + endAddress + '\'' +
                 ", customerName='" + customerName + '\'' +
@@ -144,29 +104,28 @@ public class DriverPartitionRequest implements Serializable
     public DriverPartitionRequest()
     {
         this.userId = "";
-        this.startLongitude = "";
-        this.startLatitude = "";
         this.startAddress = "";
-        this.endLongitude = "";
-        this.endLatitude = "";
         this.endAddress = "";
         this.customerName = "";
         this.phone = "";
         this.vehicle = "";
+        this.distance = 0.00;
+        this.duration = 0.00;
+        this.cost = 0.00;
     }
 
-    public DriverPartitionRequest(LocatingRequest request)
-    {
-        this.userId = request.getUserId();
-        this.startLongitude = request.getStartLongitude();
-        this.startLatitude = request.getStartLatitude();
-        this.startAddress = request.getStartAddress();
-        this.endLongitude = request.getEndLongitude();
-        this.endLatitude = request.getEndLatitude();
-        this.endAddress = request.getEndAddress();
-        this.customerName = request.getCustomerName();
-        this.phone = request.getPhone();
-        this.vehicle = request.getVehicle();
-    }
+//    public DriverPartitionRequest(LocatingRequest request)
+//    {
+//        this.userId = request.getUserId();
+//        this.startLongitude = request.getStartLongitude();
+//        this.startLatitude = request.getStartLatitude();
+//        this.endLongitude = request.getEndLongitude();
+//        this.endLatitude = request.getEndLatitude();
+//        this.startAddress = request.getStartAddress();
+//        this.endAddress = request.getEndAddress();
+//        this.customerName = request.getCustomerName();
+//        this.phone = request.getPhone();
+//        this.vehicle = request.getVehicle();
+//    }
 
 }

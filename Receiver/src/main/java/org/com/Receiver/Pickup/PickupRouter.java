@@ -37,7 +37,7 @@ public class PickupRouter {
         return true;
     }
 
-    @PostMapping(value = "/client/cost",
+    @PostMapping(value = "/cost",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean getCost(ExternalGetCostRequest request)
@@ -47,7 +47,7 @@ public class PickupRouter {
         return true;
     }
 
-    @PostMapping(value = "/new_request/client",
+    @PostMapping(value = "/client/new_request",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean startPickUp(ExternalClientAppPickupRequest bookingRequest)
@@ -57,7 +57,7 @@ public class PickupRouter {
         return true;
     }
 
-    @PostMapping(value = "/new_request/center",
+    @PostMapping(value = "/center/new_request",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean startPickUp(ExternalCallCenterPickupRequest bookingRequest)
