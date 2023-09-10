@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import org.com.VerificationService.Handler.Interfaces.Verifier;
 import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.GetCostRequest;
 
 public class VerificationHandler
 {
@@ -86,4 +87,25 @@ public class VerificationHandler
         return result;
     }
 
+    public boolean handle(GetCostRequest request)
+    {
+        boolean result = false;
+        if(verifier == null)
+        {
+            throw new NullPointerException(this.nullVerifier);
+        }
+        try
+        {
+            result = verifier.execute(request);
+            if(result == true && nextHandler != null)
+            {
+                return nextHandler.handle(request);
+            }
+            return result;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
 }

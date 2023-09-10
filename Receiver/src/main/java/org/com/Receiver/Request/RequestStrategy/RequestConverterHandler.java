@@ -3,6 +3,8 @@ package org.com.Receiver.Request.RequestStrategy;
 import org.com.Receiver.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.Receiver.Request.RequestStrategy.RequestConverterStrategies.CallCenterPickupRequestConverterStrategy;
 import org.com.Receiver.Request.RequestStrategy.RequestConverterStrategies.ClientAppPickupRequestConverterStrategy;
+import org.com.Receiver.Request.RequestStrategy.RequestConverterStrategies.GetCostRequestConverterStrategy;
+import org.com.Receiver.Request.RequestStrategy.RequestConverterStrategies.UpdateFCMRequestConverterStrategy;
 
 public class RequestConverterHandler
 {
@@ -36,5 +38,15 @@ public class RequestConverterHandler
     public void setClientAppPickupRequestConverterStrategy()
     {
         strategy = new ClientAppPickupRequestConverterStrategy();
+    }
+
+    public void setUpdateFCMTokenRequestConverterStrategy()
+    {
+        strategy = new UpdateFCMRequestConverterStrategy();
+    }
+
+    public void setGetCostRequestConverterStrategy()
+    {
+        strategy = new GetCostRequestConverterStrategy();
     }
 }

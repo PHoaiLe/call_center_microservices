@@ -1,9 +1,9 @@
-package org.com.Receiver.Kafka;
+package org.com.LocatingService.Kafka.ProducerConfig;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.com.Receiver.Kafka.CustomSerializer.RequestWrapperSerializer;
-import org.com.Receiver.Request.RequestWrapper;
+import org.com.LocatingService.Kafka.CustomSerializer.DriverPartitionRequestSerializer;
+import org.com.LocatingService.Request.DriverPartitionRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,30 +15,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class RequestWrapperKafkaProducerConfig
+public class DriverPartitionRequestKafkaProducerConfig
 {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrap_server;
 
     @Bean
-    public Map<String, Object> newRequestWrapperProducerConfig()
+    Map<String, Object> newDriverPartitionRequestProperty()
     {
         HashMap<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrap_server);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, RequestWrapperSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DriverPartitionRequestSerializer.class);
         return props;
     }
 
     @Bean
-    public ProducerFactory<String, RequestWrapper> newRequestFactoryProducerFactory()
+    ProducerFactory<String, DriverPartitionRequest> newDriverPartitionRequestProducerFactory()
     {
-        return new DefaultKafkaProducerFactory(newRequestWrapperProducerConfig());
+        return new DefaultKafkaProducerFactory<>(newDriverPartitionRequestProperty());
     }
 
     @Bean
-    public KafkaTemplate<String, RequestWrapper> kafkaTemplateRequestWrapper()
+    KafkaTemplate<String, DriverPartitionRequest> kafkaTemplateDriverPartitionRequest()
     {
-        return new KafkaTemplate<>(newRequestFactoryProducerFactory());
+        return new KafkaTemplate<>(newDriverPartitionRequestProducerFactory());
     }
 }

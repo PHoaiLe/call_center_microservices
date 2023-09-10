@@ -9,7 +9,9 @@ import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestCon
 import org.com.VerificationService.Request.RequestStrategy.RequestConverterStrategyProvider;
 import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.GetCostRequest;
 import org.com.VerificationService.Request.Requests.LocatingRequest;
+import org.com.VerificationService.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -101,15 +103,17 @@ public class PickupServiceProvider
                     LocatingRequestKafkaProducerConfig producerConfig = new LocatingRequestKafkaProducerConfig();
                     //TODO: send to locating_queue
                     LocatingRequest request = new LocatingRequest();
-                    request.setStartLongitude(clientAppPickupRequest.getStartLongitude());
-                    request.setStartLatitude(clientAppPickupRequest.getStartLatitude());
-                    request.setEndLongitude(clientAppPickupRequest.getEndLongitude());
-                    request.setEndLatitude(clientAppPickupRequest.getEndLatitude());
+//                    request.setStartLongitude(clientAppPickupRequest.getStartLongitude());
+//                    request.setStartLatitude(clientAppPickupRequest.getStartLatitude());
+//                    request.setEndLongitude(clientAppPickupRequest.getEndLongitude());
+//                    request.setEndLatitude(clientAppPickupRequest.getEndLatitude());
                     request.setStartAddress(clientAppPickupRequest.getStartAddress());
                     request.setEndAddress(clientAppPickupRequest.getEndAddress());
                     request.setVehicle(clientAppPickupRequest.getVehicle());
                     request.setCustomerName(clientAppPickupRequest.getName());
                     request.setPhone(clientAppPickupRequest.getPhone());
+                    request.setUserId(clientAppPickupRequest.getUserId());
+                    request.setRequestType(clientAppPickupRequest.getRequestType());
 
                     System.out.println("Check = true");
                     locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, request);
@@ -139,20 +143,50 @@ public class PickupServiceProvider
                     LocatingRequestKafkaProducerConfig producerConfig = new LocatingRequestKafkaProducerConfig();
                     //TODO: send to locating_queue
                     LocatingRequest request = new LocatingRequest();
-                    request.setStartLongitude(callCenterPickupRequest.getStartLongitude());
-                    request.setStartLatitude(callCenterPickupRequest.getStartLatitude());
-                    request.setEndLongitude(callCenterPickupRequest.getEndLongitude());
-                    request.setEndLatitude(callCenterPickupRequest.getEndLatitude());
+//                    request.setStartLongitude(callCenterPickupRequest.getStartLongitude());
+//                    request.setStartLatitude(callCenterPickupRequest.getStartLatitude());
+//                    request.setEndLongitude(callCenterPickupRequest.getEndLongitude());
+//                    request.setEndLatitude(callCenterPickupRequest.getEndLatitude());
                     request.setStartAddress(callCenterPickupRequest.getStartAddress());
                     request.setEndAddress(callCenterPickupRequest.getEndAddress());
                     request.setVehicle(callCenterPickupRequest.getVehicle());
-                    request.setCustomerName(callCenterPickupRequest.getName());
+//                    request.setCustomerName(callCenterPickupRequest.getName());
                     request.setPhone(callCenterPickupRequest.getPhone());
+                    request.setUserId(callCenterPickupRequest.getCallCenterId());
+                    request.setRequestType(callCenterPickupRequest.getRequestType());
 
                     locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, request);
                 }
             }
         };
+        return task;
+    };
+
+    private GetRunnable_BytesParam_Function GetCostRequestRunnable = (payload) ->
+    {
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                String requestType = RequestTypes.GET_COST_REQUEST;
+                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
+                RequestConverterStrategyProvider requestConverterStrategyProvider = new RequestConverterStrategyProvider();
+
+                RequestConverterStrategy requestConverterStrategy = requestConverterStrategyProvider.getRequestConverterStrategy(requestType);
+                GetCostRequest getCostRequest = (GetCostRequest) requestConverterStrategy.fromByteToObject(payload);
+                boolean check = verificationServiceProvider.getVerificationHandler().handle(getCostRequest);
+                if(check == true)
+                {
+                    LocatingRequest locatingRequest = new LocatingRequest();
+                    locatingRequest.setUserId(getCostRequest.getUserId());
+                    locatingRequest.setRequestType(getCostRequest.getRequestType());
+                    locatingRequest.setStartAddress(getCostRequest.getStartAddress());
+                    locatingRequest.setEndAddress(getCostRequest.getEndAddress());
+
+                    locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, locatingRequest);
+                }
+            }
+        };
+
         return task;
     };
 }

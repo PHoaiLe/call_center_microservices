@@ -18,6 +18,8 @@
       <module>Receiver</module>
       <module>VerificationService</module>
       <module>LocatingService</module>
+      <module>DriverPartitionService</module>
+      <module>BroadcastService</module>
   </modules>
 
   <properties>

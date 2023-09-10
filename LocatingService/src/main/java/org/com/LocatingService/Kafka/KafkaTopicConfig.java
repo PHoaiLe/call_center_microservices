@@ -13,10 +13,6 @@ public class KafkaTopicConfig
     {
         return TopicBuilder.name(KafkaTopics.LOCATING).build();
     }
-    public NewTopic DriverPartition()
-    {
-        return TopicBuilder.name(KafkaTopics.DRIVER_PARTITION).build();
-    }
     public NewTopic Notification()
     {
         return TopicBuilder.name(KafkaTopics.NOTIFICATION).build();

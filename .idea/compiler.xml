@@ -8,11 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="LocatingService" />
+        <module name="DriverPartitionService" />
+        <module name="VerificationService" />
+        <module name="BroadcastService" />
         <module name="Receiver" />
         <module name="NotificationService" />
         <module name="BookingService" />
         <module name="MonitoringService" />
-        <module name="VerificationService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import org.com.VerificationService.Handler.Interfaces.Verifier;
 import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
 import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.GetCostRequest;
 //
 //Firebase Authentication sessions are long lived.
 //Every time a user signs in, the user credentials are sent to the Firebase Authentication backend and exchanged for a Firebase ID token (a JWT) and refresh token.
@@ -61,5 +62,25 @@ public class FirebaseIdTokenVerifier implements Verifier
     public boolean execute(CallCenterPickupRequest request)
     {
         return true;
+    }
+
+    @Override
+    public boolean execute(GetCostRequest request) {
+        String idToken = request.getIdToken();
+        try
+        {
+            if(firebaseAuth.verifyIdToken(idToken) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 }

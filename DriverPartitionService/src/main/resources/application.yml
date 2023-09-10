@@ -1,0 +1,8 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: DriverPartitionService
+  kafka:
+    bootstrap-servers: localhost:29092

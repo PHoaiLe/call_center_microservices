@@ -7,31 +7,42 @@ import java.io.Serializable;
 public class CallCenterPickupRequest implements Serializable
 {
     private String systemKey;
+    private String callCenterId;
     private String requestType;
     private String name;
-    private String startLongitude;
-    private String startLatitude;
-    private String endLongitude;
-    private String endLatitude;
+    //    private String startLongitude;
+//    private String startLatitude;
+//    private String endLongitude;
+//    private String endLatitude;
     private String startAddress;
     private String endAddress;
     private String phone;
     private String vehicle;
     private String time;
 
+
     public CallCenterPickupRequest()
     {
         requestType = RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST;
         name = "";
-        startLongitude = "";
-        startLatitude = "";
-        endLongitude = "";
-        endLatitude = "";
+        callCenterId = "";
+//        startLongitude = "";
+//        startLatitude = "";
+//        endLongitude = "";
+//        endLatitude = "";
         startAddress = "";
         endAddress = "";
         phone = "";
         vehicle = "";
         time = "";
+    }
+
+    public String getCallCenterId() {
+        return callCenterId;
+    }
+
+    public void setCallCenterId(String callCenterId) {
+        this.callCenterId = callCenterId;
     }
 
     public String getSystemKey() {
@@ -58,37 +69,37 @@ public class CallCenterPickupRequest implements Serializable
         this.name = name;
     }
 
-    public String getStartLongitude() {
-        return startLongitude;
-    }
-
-    public void setStartLongitude(String startLongitude) {
-        this.startLongitude = startLongitude;
-    }
-
-    public String getStartLatitude() {
-        return startLatitude;
-    }
-
-    public void setStartLatitude(String startLatitude) {
-        this.startLatitude = startLatitude;
-    }
-
-    public String getEndLongitude() {
-        return endLongitude;
-    }
-
-    public void setEndLongitude(String endLongitude) {
-        this.endLongitude = endLongitude;
-    }
-
-    public String getEndLatitude() {
-        return endLatitude;
-    }
-
-    public void setEndLatitude(String endLatitude) {
-        this.endLatitude = endLatitude;
-    }
+//    public String getStartLongitude() {
+//        return startLongitude;
+//    }
+//
+//    public void setStartLongitude(String startLongitude) {
+//        this.startLongitude = startLongitude;
+//    }
+//
+//    public String getStartLatitude() {
+//        return startLatitude;
+//    }
+//
+//    public void setStartLatitude(String startLatitude) {
+//        this.startLatitude = startLatitude;
+//    }
+//
+//    public String getEndLongitude() {
+//        return endLongitude;
+//    }
+//
+//    public void setEndLongitude(String endLongitude) {
+//        this.endLongitude = endLongitude;
+//    }
+//
+//    public String getEndLatitude() {
+//        return endLatitude;
+//    }
+//
+//    public void setEndLatitude(String endLatitude) {
+//        this.endLatitude = endLatitude;
+//    }
 
     public String getStartAddress() {
         return startAddress;
@@ -130,16 +141,19 @@ public class CallCenterPickupRequest implements Serializable
         this.time = time;
     }
 
+
+
     @Override
     public String toString() {
         return "CallCenterPickupRequest{" +
                 "systemKey='" + systemKey + '\'' +
+                ", callCenterId='" + callCenterId + '\'' +
                 ", requestType='" + requestType + '\'' +
                 ", name='" + name + '\'' +
-                ", startLongitude='" + startLongitude + '\'' +
-                ", startLatitude='" + startLatitude + '\'' +
-                ", endLongitude='" + endLongitude + '\'' +
-                ", endLatitude='" + endLatitude + '\'' +
+//                ", startLongitude='" + startLongitude + '\'' +
+//                ", startLatitude='" + startLatitude + '\'' +
+//                ", endLongitude='" + endLongitude + '\'' +
+//                ", endLatitude='" + endLatitude + '\'' +
                 ", startAddress='" + startAddress + '\'' +
                 ", endAddress='" + endAddress + '\'' +
                 ", phone='" + phone + '\'' +
@@ -148,20 +162,4 @@ public class CallCenterPickupRequest implements Serializable
                 '}';
     }
 
-    public void CopyFromObject(Object object)
-    {
-        CallCenterPickupRequest externalObject =  (CallCenterPickupRequest) object;
-        this.setSystemKey(externalObject.systemKey);
-        this.setRequestType(externalObject.requestType);
-        this.setName(externalObject.name);
-        this.setStartLongitude(externalObject.startLongitude);
-        this.setStartLatitude(externalObject.startLatitude);
-        this.setEndLongitude(externalObject.endLongitude);
-        this.setEndLatitude(externalObject.endLatitude);
-        this.setStartAddress(externalObject.startAddress);
-        this.setEndAddress(externalObject.endAddress);
-        this.setPhone(externalObject.phone);
-        this.setVehicle(externalObject.vehicle);
-        this.setTime(externalObject.time);
-    }
 }

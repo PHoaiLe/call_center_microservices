@@ -34,11 +34,11 @@
             <version>3.0.9</version>
         </dependency>
         <dependency>
-            <groupId>org.com</groupId>
+            <groupId>org.com.locatingdependency</groupId>
             <artifactId>CallCenterLocatingService</artifactId>
-            <version>1.2</version>
+            <version>1.8.1</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/CallCenterLocatingService-1.0.jar</systemPath>
+            <systemPath>${basedir}/src/main/java/lib/CallCenterLocatingService-1.8.1.jar</systemPath>
         </dependency>
     </dependencies>
 
