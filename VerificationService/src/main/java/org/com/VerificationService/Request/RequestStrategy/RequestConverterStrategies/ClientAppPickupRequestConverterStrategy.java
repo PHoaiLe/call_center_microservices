@@ -2,7 +2,7 @@ package org.com.VerificationService.Request.RequestStrategy.RequestConverterStra
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.VerificationService.Request.Constants.RequestTypes;
-import org.com.VerificationService.Request.Requests.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.Receive.ClientAppPickupRequest;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 
 public class ClientAppPickupRequestConverterStrategy implements RequestConverterStrategy

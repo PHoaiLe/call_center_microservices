@@ -2,9 +2,8 @@ package org.com.BroadcastService.Kafka.ConsumerConfig;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.com.BroadcastService.Kafka.CustomDeserializer.BroadcastRequestDeserializer;
-import org.com.BroadcastService.Requests.Requests.BroadcastRequest;
+import org.com.BroadcastService.Requests.Requests.Receive.BroadcastRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

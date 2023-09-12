@@ -14,13 +14,4 @@ public class BookingService
     {
         SpringApplication.run(BookingService.class, args);
     }
-
-    @Bean
-    CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate)
-    {
-        return args ->
-        {
-            kafkaTemplate.send("booking", "hello Kafka");
-        };
-    }
 }

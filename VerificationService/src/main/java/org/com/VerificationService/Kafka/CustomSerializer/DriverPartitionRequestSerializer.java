@@ -2,7 +2,7 @@ package org.com.VerificationService.Kafka.CustomSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
-import org.com.VerificationService.Request.Requests.DriverPartitionRequest;
+import org.com.VerificationService.Request.Requests.Send.DriverPartitionRequest;
 
 import java.util.Map;
 

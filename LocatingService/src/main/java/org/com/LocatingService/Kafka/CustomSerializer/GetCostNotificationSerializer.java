@@ -3,9 +3,8 @@ package org.com.LocatingService.Kafka.CustomSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Serializer;
-import org.com.LocatingService.Request.GetCostNotification;
+import org.com.LocatingService.Request.Send.GetCostNotification;
 
-import java.io.Serializable;
 import java.util.Map;
 
 public class GetCostNotificationSerializer implements Serializer

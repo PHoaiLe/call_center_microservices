@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.LocatingService.Kafka.Constants.KafkaTopics;
 import org.com.LocatingService.Kafka.Constants.VehicleTypes;
 import org.com.LocatingService.Request.*;
+import org.com.LocatingService.Request.Receive.LocatingRequest;
+import org.com.LocatingService.Request.Send.GetCostNotification;
+import org.com.LocatingService.Request.Send.GetCostResponse;
+import org.com.LocatingService.Request.Send.InvalidLocationInfoNotification;
 import org.com.LocatingService.Utils.Cost.CostHandler;
 import org.example.locatingdependency.CallCenterLocatingService;
 import org.example.locatingdependency.LocatingPluginService;
@@ -118,6 +122,26 @@ public class LocatingServiceProvider
                 if(startCoordinate == null || endCoordinate == null)
                 {
                     //TODO: send notification to producer
+                    InvalidLocationInfoNotification notification = new InvalidLocationInfoNotification();
+                    notification.setUserId(request.getUserId());
+                    notification.setStartAddress(request.getStartAddress());
+                    notification.setEndAddress(request.getEndAddress());
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    byte[] bytes = null;
+                    try
+                    {
+                        bytes = mapper.writeValueAsBytes(notification);
+                    }
+                    catch (Exception ex)
+                    {
+                        return;
+                    }
+
+                    NotificationWrapper wrapper = new NotificationWrapper();
+                    wrapper.setNotificationType(notification.getNotificationType());
+                    wrapper.setPayload(bytes);
+                    notificationWrapperKafkaTemplate.send(KafkaTopics.NOTIFICATION, wrapper);
 
                     System.out.println("Invalid coordinate....");
                     return;

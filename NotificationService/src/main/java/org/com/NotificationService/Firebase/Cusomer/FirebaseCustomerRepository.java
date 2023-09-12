@@ -12,7 +12,7 @@ public class FirebaseCustomerRepository
     public String getCustomerFCMToken(String customerId)
     {
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<DocumentSnapshot> apiFuture =  firestore.collection(CustomerConstants.COLLECTION)
+        ApiFuture<DocumentSnapshot> apiFuture =  firestore.collection(DriverPartitionConstant.COLLECTION)
                 .document(customerId)
                 .get();
 

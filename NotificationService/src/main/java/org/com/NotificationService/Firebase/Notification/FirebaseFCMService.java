@@ -1,11 +1,9 @@
 package org.com.NotificationService.Firebase.Notification;
 
 import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 import org.com.NotificationService.Firebase.Cusomer.FirebaseCustomerRepository;
 import org.com.NotificationService.Requests.RequestStrategy.Interfaces.RequestConverterStrategy;
-import org.com.NotificationService.Requests.RequestStrategy.NotificationRequestConverterHandler;
-import org.com.NotificationService.Requests.RequestStrategy.RequestConverterStrategy.GetCostNotificationConverterStrategy;
+import org.com.NotificationService.Requests.RequestStrategy.RequestConverterStrategies.GetCostNotificationConverterStrategy;
 import org.com.NotificationService.Requests.Requests.GetCostNotification;
 import org.springframework.stereotype.Service;
 

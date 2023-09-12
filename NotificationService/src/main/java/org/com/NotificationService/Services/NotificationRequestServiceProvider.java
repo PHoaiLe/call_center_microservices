@@ -25,6 +25,8 @@ public class NotificationRequestServiceProvider
     {
         executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         serviceProvider = new HashMap<>();
+
+        manualInitialization();
     }
 
     private void manualInitialization()
@@ -71,16 +73,24 @@ public class NotificationRequestServiceProvider
 
                   //get RequestConverterStrategy by requestType
                   String requestType = NotificationTypes.GET_COST_NOTIFICATION_REQUEST;
+
                   NotificationRequestConverterProvider converterProvider = new NotificationRequestConverterProvider();
+
                   RequestConverterStrategy converterStrategy = converterProvider.getRequestConverterStrategy(requestType);
 
                   //set converter strategy for converter handler
                   NotificationRequestConverterHandler handler = new NotificationRequestConverterHandler();
+
                   handler.setStrategy(converterStrategy);
+
                   GetCostNotification notification = (GetCostNotification) handler.fromBytesToObject(bytes);
 
+                  System.out.println(notification);
+
                   FirebaseFCMService fcmService = new FirebaseFCMService();
+
                   String response = fcmService.sendMessageToDevice(notification);
+                  System.out.println("response: " + response);
                   System.out.println("After sending notification to user " + notification.getIdUser());
               }
           };

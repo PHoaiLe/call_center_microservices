@@ -2,8 +2,7 @@ package org.com.BroadcastService.Kafka.CustomDeserializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.com.BroadcastService.BroadcastService;
-import org.com.BroadcastService.Requests.Requests.BroadcastRequest;
+import org.com.BroadcastService.Requests.Requests.Receive.BroadcastRequest;
 
 import java.util.Map;
 

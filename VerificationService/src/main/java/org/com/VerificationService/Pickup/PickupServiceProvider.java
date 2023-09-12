@@ -1,14 +1,20 @@
 package org.com.VerificationService.Pickup;
 
-import org.com.VerificationService.Handler.VerificationHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.VerificationService.Kafka.Constants.KafkaTopics;
-import org.com.VerificationService.Kafka.ProducerConfig.LocatingRequestKafkaProducerConfig;
 import org.com.VerificationService.Pickup.FunctionInterface.GetRunnable_BytesParam_Function;
+import org.com.VerificationService.Request.BookingRequestWrapper;
+import org.com.VerificationService.Request.Constants.BookingRequestTypes;
 import org.com.VerificationService.Request.Constants.RequestTypes;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.VerificationService.Request.RequestStrategy.RequestConverterStrategyProvider;
-import org.com.VerificationService.Request.Requests.*;
-import org.com.VerificationService.VerificationService;
+import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
+import org.com.VerificationService.Request.Requests.Receive.ClientAppPickupRequest;
+import org.com.VerificationService.Request.Requests.Receive.GetCostRequest;
+import org.com.VerificationService.Request.Requests.Receive.UpdateFCMToken;
+import org.com.VerificationService.Request.Requests.Send.BookingUpdateFCMToken;
+import org.com.VerificationService.Request.Requests.Send.DriverPartitionRequest;
+import org.com.VerificationService.Request.Requests.Send.LocatingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -28,6 +34,8 @@ public class PickupServiceProvider
     private KafkaTemplate<String, LocatingRequest> locatingRequestKafkaTemplate;
     @Autowired
     private KafkaTemplate<String, DriverPartitionRequest> driverPartitionRequestKafkaTemplate;
+    @Autowired
+    private KafkaTemplate<String, BookingRequestWrapper> bookingRequestWrapperKafkaTemplate;
 
     public PickupServiceProvider()
     {
@@ -54,6 +62,7 @@ public class PickupServiceProvider
         serviceProvider.put(RequestTypes.CLIENT_APP_NEW_PICK_UP_REQUEST, ClientAppNewPickupRequestTask);
         serviceProvider.put(RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST, CallCenterRequestRunnable);
         serviceProvider.put(RequestTypes.GET_COST_REQUEST, GetCostRequestRunnable);
+        serviceProvider.put(RequestTypes.UPDATE_FCM_TOKEN_REQUEST, GetUpdateFCMTokenRunnable);
     }
 
     public void execute(String requestType, byte[] payload)
@@ -190,4 +199,58 @@ public class PickupServiceProvider
 
         return task;
     };
+
+    private GetRunnable_BytesParam_Function GetUpdateFCMTokenRunnable = (payload) ->
+    {
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                byte[] bytes = payload;
+                String requestType = RequestTypes.UPDATE_FCM_TOKEN_REQUEST;
+
+                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
+                RequestConverterStrategyProvider strategyProvider = new RequestConverterStrategyProvider();
+                RequestConverterStrategy converterStrategy = strategyProvider.getRequestConverterStrategy(requestType);
+
+                UpdateFCMToken request = (UpdateFCMToken) converterStrategy.fromByteToObject(bytes);
+
+//                boolean check = verificationServiceProvider.getVerificationHandler().handle(request);
+
+                boolean check = true;
+                if(check == true)
+                {
+                    //TODO: send to BookingService to update FCM token in the database
+                    BookingUpdateFCMToken sendingRequest = new BookingUpdateFCMToken();
+                    sendingRequest.setUserId(request.getUserId());
+                    sendingRequest.setRole(request.getRole());
+                    sendingRequest.setRequestType(BookingRequestTypes.UPDATE_FCM_TOKEN);
+                    sendingRequest.setFcm_token(request.getFcm_token());
+
+                    BookingRequestWrapper wrapper = new BookingRequestWrapper();
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    byte[] bookingWrapperPayload = null;
+                    try
+                    {
+                        bookingWrapperPayload = mapper.writeValueAsBytes(sendingRequest);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println(ex);
+                        return;
+                    }
+
+                    wrapper.setRequestType(sendingRequest.getRequestType());
+                    wrapper.setPayload(bookingWrapperPayload);
+
+                    bookingRequestWrapperKafkaTemplate.send(KafkaTopics.BOOKING, wrapper);
+                    System.out.println("after sending update fcm_token");
+                }
+            }
+        };
+
+        return task;
+    };
+
+    
 }

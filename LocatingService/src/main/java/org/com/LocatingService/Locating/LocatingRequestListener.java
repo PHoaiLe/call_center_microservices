@@ -2,7 +2,7 @@ package org.com.LocatingService.Locating;
 
 import org.com.LocatingService.Kafka.Constants.KafkaListenerIds;
 import org.com.LocatingService.Kafka.Constants.KafkaTopics;
-import org.com.LocatingService.Request.LocatingRequest;
+import org.com.LocatingService.Request.Receive.LocatingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

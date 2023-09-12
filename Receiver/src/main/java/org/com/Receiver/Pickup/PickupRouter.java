@@ -2,9 +2,7 @@ package org.com.Receiver.Pickup;
 
 
 import jakarta.servlet.annotation.HttpConstraint;
-import org.com.Receiver.Request.ExternalRequests.ExternalCallCenterPickupRequest;
-import org.com.Receiver.Request.ExternalRequests.ExternalClientAppPickupRequest;
-import org.com.Receiver.Request.ExternalRequests.ExternalGetCostRequest;
+import org.com.Receiver.Request.ExternalRequests.*;
 import org.com.Receiver.Request.Requests.AcceptPickupRequest;
 import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
 import org.com.Receiver.Request.Requests.ClientAppPickupRequest;
@@ -76,11 +74,22 @@ public class PickupRouter {
         return true;
     }
 
-    @PostMapping(value = "/driver/fcm_update",
+    @PostMapping(value = "/fcm_update",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE})
-    public boolean updateFCMToken(UpdateFCMToken request)
+    public boolean updateFCMToken(ExternalUpdateFCMToken request)
     {
+        System.out.println("Update FCM: " + request);
+        pickupServices.sendToDataRoom(request);
+        return true;
+    }
+
+    @PostMapping(value = "/direction/v1",
+    consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE})
+    public boolean getDirection(ExternalGetDirectionRequest request)
+    {
+        System.out.println("Direction request: " + request);
 
         return true;
     }

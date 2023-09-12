@@ -1,15 +1,10 @@
 package org.com.Receiver.Pickup;
 
 import org.com.Receiver.Kafka.Constants.KafkaTopics;
-import org.com.Receiver.Request.ExternalRequests.ExternalCallCenterPickupRequest;
-import org.com.Receiver.Request.ExternalRequests.ExternalClientAppPickupRequest;
-import org.com.Receiver.Request.ExternalRequests.ExternalGetCostRequest;
-import org.com.Receiver.Request.Requests.CallCenterPickupRequest;
-import org.com.Receiver.Request.Requests.ClientAppPickupRequest;
+import org.com.Receiver.Request.ExternalRequests.*;
+import org.com.Receiver.Request.Requests.*;
 import org.com.Receiver.Request.RequestStrategy.RequestConverterHandler;
 import org.com.Receiver.Request.RequestWrapper;
-import org.com.Receiver.Request.Requests.GetCostRequest;
-import org.com.Receiver.Request.Requests.UpdateFCMToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -92,5 +87,38 @@ public class PickupServices {
         System.out.println("after sending ...");
     }
 
+    public void sendToDataRoom(ExternalUpdateFCMToken request)
+    {
+        if(request == null)
+        {
+            return;
+        }
+
+        UpdateFCMToken fcmTokenRequest = new UpdateFCMToken(request);
+        RequestWrapper wrapper = new RequestWrapper();
+
+        wrapper.setRequestType(fcmTokenRequest.getRequestType());
+
+        RequestConverterHandler converterHandler = new RequestConverterHandler();
+        converterHandler.setUpdateFCMTokenRequestConverterStrategy();
+
+        wrapper.setPayload(converterHandler.fromObjectToBytes(fcmTokenRequest));
+
+        requestWrapperKafkaTemplate.send(KafkaTopics.DATA_ROOM, wrapper);
+        System.out.println("after sending update fcm token...");
+    }
+
+    public void sendToDataRoom(ExternalGetDirectionRequest request)
+    {
+        if(request == null)
+        {
+            return;
+        }
+
+        GetDirectionRequest directionRequest = new GetDirectionRequest(request);
+
+
+
+    }
 
 }

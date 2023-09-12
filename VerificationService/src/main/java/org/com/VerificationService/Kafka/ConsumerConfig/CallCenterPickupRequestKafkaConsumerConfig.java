@@ -3,7 +3,7 @@ package org.com.VerificationService.Kafka.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.com.VerificationService.Kafka.CustomDeserializer.CallCenterPickupRequestDeserializer;
-import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
+import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

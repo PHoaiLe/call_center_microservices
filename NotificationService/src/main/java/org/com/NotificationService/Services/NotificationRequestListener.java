@@ -10,8 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotificationRequestListener
 {
-    @Autowired
     private NotificationRequestServiceProvider serviceProvider;
+
+    @Autowired
+    public NotificationRequestListener(NotificationRequestServiceProvider provider)
+    {
+        this.serviceProvider = provider;
+    }
 
     @KafkaListener(id = KafkaListenerIds.NOTIFICATION_REQUEST_KAFKA_LISTENER_ID,
     topics = KafkaTopics.NOTIFICATION,
@@ -19,6 +24,6 @@ public class NotificationRequestListener
     public void notificationRequestListen(NotificationWrapper wrapper)
     {
         System.out.println("notification: " + wrapper);
-        //serviceProvider.execute(wrapper);
+        serviceProvider.execute(wrapper);
     }
 }

@@ -3,7 +3,6 @@ package org.com.LocatingService.Kafka.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.com.LocatingService.Kafka.CustomSerializer.NotificationWrapperSerializer;
-import org.com.LocatingService.Request.GetCostNotification;
 import org.com.LocatingService.Request.NotificationWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

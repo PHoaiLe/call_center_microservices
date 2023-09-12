@@ -1,10 +1,9 @@
 package org.com.LocatingService.Kafka.ConsumerConfig;
 
-import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.com.LocatingService.Kafka.CustomDeserializer.LocatingRequestDeserializer;
-import org.com.LocatingService.Request.LocatingRequest;
+import org.com.LocatingService.Request.Receive.LocatingRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

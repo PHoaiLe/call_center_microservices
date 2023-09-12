@@ -18,4 +18,14 @@ public class KafkaTopicConfig
         return TopicBuilder.name(KafkaTopics.DRIVER_PARTITION).build();
     }
 
+    public NewTopic Locating()
+    {
+        return TopicBuilder.name(KafkaTopics.LOCATING).build();
+    }
+
+    public NewTopic Booking()
+    {
+        return TopicBuilder.name(KafkaTopics.BOOKING).build();
+    }
+
 }

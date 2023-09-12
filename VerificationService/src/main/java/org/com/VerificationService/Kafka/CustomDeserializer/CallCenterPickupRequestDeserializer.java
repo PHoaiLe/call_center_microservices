@@ -2,7 +2,7 @@ package org.com.VerificationService.Kafka.CustomDeserializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.com.VerificationService.Request.Requests.CallCenterPickupRequest;
+import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
 
 import java.util.Map;
 

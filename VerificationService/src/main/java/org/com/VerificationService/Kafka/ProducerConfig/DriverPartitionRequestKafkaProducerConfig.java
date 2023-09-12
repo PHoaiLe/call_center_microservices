@@ -3,7 +3,7 @@ package org.com.VerificationService.Kafka.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.com.VerificationService.Kafka.CustomSerializer.DriverPartitionRequestSerializer;
-import org.com.VerificationService.Request.Requests.DriverPartitionRequest;
+import org.com.VerificationService.Request.Requests.Send.DriverPartitionRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

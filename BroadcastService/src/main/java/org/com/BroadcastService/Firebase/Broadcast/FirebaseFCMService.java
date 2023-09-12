@@ -1,12 +1,15 @@
 package org.com.BroadcastService.Firebase.Broadcast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.SendResponse;
 
 import org.com.BroadcastService.Firebase.Objects.DriverPartition;
 import org.com.BroadcastService.Requests.Constants.DriverPartitionRequestAttributes;
-import org.com.BroadcastService.Requests.Requests.DriverPartitionRequest;
+import org.com.BroadcastService.Requests.Requests.Receive.DriverPartitionRequest;
+import org.com.BroadcastService.Requests.Requests.Send.BroadcastPickupRequestNotification;
+import org.com.BroadcastService.Requests.Requests.Send.NotificationWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,30 +51,62 @@ public class FirebaseFCMService
         }
 
         Map<String, String> property = new HashMap<>();
-        property.put(DriverPartitionRequestAttributes.USERID, info.getUserId());
-        property.put(DriverPartitionRequestAttributes.REQUEST_TYPE, info.getRequestType());
-        property.put(DriverPartitionRequestAttributes.START_LONGITUDE, info.getStartLongitude());
-        property.put(DriverPartitionRequestAttributes.START_LATITUDE, info.getStartLatitude());
-        property.put(DriverPartitionRequestAttributes.END_LONGITUDE, info.getEndLongitude());
-        property.put(DriverPartitionRequestAttributes.END_LATITUDE, info.getEndLatitude());
-        property.put(DriverPartitionRequestAttributes.START_ADDRESS, info.getStartAddress());
-        property.put(DriverPartitionRequestAttributes.END_ADDRESS, info.getEndAddress());
-        property.put(DriverPartitionRequestAttributes.CUSTOMER_NAME, info.getCustomerName());
-        property.put(DriverPartitionRequestAttributes.PHONE, info.getPhone());
-        property.put(DriverPartitionRequestAttributes.VEHICLE, info.getVehicle());
-        property.put(DriverPartitionRequestAttributes.DURATION, String.valueOf(info.getDuration()));
-        property.put(DriverPartitionRequestAttributes.DISTANCE, String.valueOf(info.getDistance()));
-        property.put(DriverPartitionRequestAttributes.COST, String.valueOf(info.getCost()));
+//        property.put(DriverPartitionRequestAttributes.USERID, info.getUserId());
+//        property.put(DriverPartitionRequestAttributes.REQUEST_TYPE, info.getRequestType());
+//        property.put(DriverPartitionRequestAttributes.START_LONGITUDE, info.getStartLongitude());
+//        property.put(DriverPartitionRequestAttributes.START_LATITUDE, info.getStartLatitude());
+//        property.put(DriverPartitionRequestAttributes.END_LONGITUDE, info.getEndLongitude());
+//        property.put(DriverPartitionRequestAttributes.END_LATITUDE, info.getEndLatitude());
+//        property.put(DriverPartitionRequestAttributes.START_ADDRESS, info.getStartAddress());
+//        property.put(DriverPartitionRequestAttributes.END_ADDRESS, info.getEndAddress());
+//        property.put(DriverPartitionRequestAttributes.CUSTOMER_NAME, info.getCustomerName());
+//        property.put(DriverPartitionRequestAttributes.PHONE, info.getPhone());
+//        property.put(DriverPartitionRequestAttributes.VEHICLE, info.getVehicle());
+//        property.put(DriverPartitionRequestAttributes.DURATION, String.valueOf(info.getDuration()));
+//        property.put(DriverPartitionRequestAttributes.DISTANCE, String.valueOf(info.getDistance()));
+//        property.put(DriverPartitionRequestAttributes.COST, String.valueOf(info.getCost()));
+
+        BroadcastPickupRequestNotification notification = new BroadcastPickupRequestNotification();
+        notification.setUserId(info.getUserId());
+        notification.setStartLongitude(info.getStartLongitude());
+        notification.setStartLatitude(info.getStartLatitude());
+        notification.setEndLongitude(info.getEndLongitude());
+        notification.setEndLatitude(info.getEndLatitude());
+        notification.setStartAddress(info.getStartAddress());
+        notification.setEndAddress(info.getEndAddress());
+        notification.setCustomerName(info.getCustomerName());
+        notification.setPhone(info.getPhone());
+        notification.setVehicle(info.getVehicle());
+        notification.setDuration(info.getDuration());
+        notification.setDistance(info.getDistance());
+        notification.setCost(info.getCost());
+
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] payload = null;
+        try
+        {
+            payload = mapper.writeValueAsBytes(notification);
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex);
+            return null;
+        }
+
+        property.put("userId", notification.getUserId());
+        property.put("notificationType", notification.getNotificationType());
+        property.put("payload", new String(payload));
 
 
         int MAX_MESSAGES_PER_INVOCATION = repository.getMAX_MESSAGE_PER_INVOCATION();
         int timeToSend = driverFCMToken.size() / MAX_MESSAGES_PER_INVOCATION;
         int remain = driverFCMToken.size() % MAX_MESSAGES_PER_INVOCATION;
 
-
+        System.out.println("remain " + remain);
         //driverFCMToken.size() < 500 OR start of partition = 0
         if(timeToSend < 1)
         {
+            System.out.println("timeToSend < 1");
             MulticastMessage message = MulticastMessage.builder()
                     .putAllData(property)
                     .addAllTokens(driverFCMToken)
@@ -79,6 +114,7 @@ public class FirebaseFCMService
             BatchResponse response = repository.sendMessageToMutipleDevices(message);
             List<DriverPartition> failedMessages = getMappingListOfErrorTokenFrom(response, listOfDriverPartition, 0);
 
+            System.out.println("after sending...");
             return failedMessages;
         }
 

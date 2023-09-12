@@ -2,7 +2,7 @@ package org.com.BroadcastService.Services;
 
 import org.com.BroadcastService.Firebase.Broadcast.FirebaseFCMService;
 import org.com.BroadcastService.Firebase.Objects.DriverPartition;
-import org.com.BroadcastService.Requests.Requests.BroadcastRequest;
+import org.com.BroadcastService.Requests.Requests.Receive.BroadcastRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

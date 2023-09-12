@@ -3,7 +3,7 @@ package org.com.VerificationService.Kafka.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.com.VerificationService.Kafka.CustomSerializer.LocatingRequestSerializer;
-import org.com.VerificationService.Request.Requests.LocatingRequest;
+import org.com.VerificationService.Request.Requests.Send.LocatingRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

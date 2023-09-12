@@ -3,7 +3,7 @@ package org.com.VerificationService.Request.RequestStrategy.RequestConverterStra
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.VerificationService.Request.Constants.RequestTypes;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
-import org.com.VerificationService.Request.Requests.GetCostRequest;
+import org.com.VerificationService.Request.Requests.Receive.GetCostRequest;
 
 public class GetCostRequestConverterStrategy implements RequestConverterStrategy
 {

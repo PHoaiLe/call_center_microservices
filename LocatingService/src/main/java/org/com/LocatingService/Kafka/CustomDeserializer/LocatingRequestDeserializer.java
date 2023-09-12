@@ -3,7 +3,7 @@ package org.com.LocatingService.Kafka.CustomDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.com.LocatingService.Request.LocatingRequest;
+import org.com.LocatingService.Request.Receive.LocatingRequest;
 
 import java.util.Map;
 

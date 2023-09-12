@@ -8,7 +8,7 @@ import java.util.List;
 
 public class NotificationRequestConverterProvider
 {
-    private final String packageOfRequestConverterStrategy = "org.com.NotificationService.Requests.RequestStrategy.RequestConverterStrategy";
+    private final String packageOfRequestConverterStrategy = "org.com.NotificationService.Requests.RequestStrategy.RequestConverterStrategies";
     private HashMap<String, String> strategyProvider;
 
     public NotificationRequestConverterProvider()
