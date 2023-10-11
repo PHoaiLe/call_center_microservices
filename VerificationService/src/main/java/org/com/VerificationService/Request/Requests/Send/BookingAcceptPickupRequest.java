@@ -1,15 +1,13 @@
-package org.com.Receiver.Request.Requests;
+package org.com.VerificationService.Request.Requests.Send;
 
+import org.com.VerificationService.Request.Constants.BookingRequestTypes;
+import org.com.VerificationService.Request.Constants.RequestTypes;
 
-import org.com.Receiver.Request.Constants.RequestTypes;
-import org.com.Receiver.Request.ExternalRequests.ExternalAcceptPickupRequest;
-
+import java.io.Serial;
 import java.io.Serializable;
 
-public class AcceptPickupRequest implements Serializable
+public class BookingAcceptPickupRequest implements Serializable
 {
-    private String idToken;
-    private String systemKey;
     private String requestType;
     private String partnerId;
     private String userId;
@@ -31,11 +29,9 @@ public class AcceptPickupRequest implements Serializable
     private Double cost;
 
 
-    public AcceptPickupRequest()
+    public BookingAcceptPickupRequest()
     {
-        idToken = "";
-        systemKey = "";
-        requestType = RequestTypes.DRIVER_ACCEPT_PICKUP_REQUEST;
+        requestType = BookingRequestTypes.ACCEPT_PICKUP_REQUEST;
         partnerId = "";
         userId = "";
         customerName = "";
@@ -56,46 +52,6 @@ public class AcceptPickupRequest implements Serializable
         cost = 0.00;
     }
 
-    public AcceptPickupRequest(ExternalAcceptPickupRequest request)
-    {
-        idToken = request.getIdToken();
-        systemKey = request.getSystemKey();
-        requestType = RequestTypes.DRIVER_ACCEPT_PICKUP_REQUEST;
-        partnerId = request.getPartnerId();
-        userId = request.getUserId();
-        customerName = request.getCustomerName();
-
-        startLongitude = request.getStartLongitude();
-        startLatitude = request.getStartLatitude();
-        endLongitude = request.getEndLongitude();
-        endLatitude = request.getEndLatitude();
-
-
-        startAddress = request.getStartAddress();
-        endAddress = request.getEndAddress();
-
-        phone = request.getPhone();
-        vehicle = request.getVehicle();
-        duration = request.getDuration();
-        distance = request.getDistance();
-        cost = request.getCost();
-    }
-
-    public String getIdToken() {
-        return idToken;
-    }
-
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
-    }
-
-    public String getSystemKey() {
-        return systemKey;
-    }
-
-    public void setSystemKey(String systemKey) {
-        this.systemKey = systemKey;
-    }
 
     public String getRequestType() {
         return requestType;
@@ -219,10 +175,8 @@ public class AcceptPickupRequest implements Serializable
 
     @Override
     public String toString() {
-        return "AcceptPickupRequest{" +
-                "idToken='" + idToken + '\'' +
-                ", systemKey='" + systemKey + '\'' +
-                ", requestType='" + requestType + '\'' +
+        return "BookingAcceptPickupRequest{" +
+                "requestType='" + requestType + '\'' +
                 ", partnerId='" + partnerId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", customerName='" + customerName + '\'' +

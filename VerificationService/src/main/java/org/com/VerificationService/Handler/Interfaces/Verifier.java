@@ -1,10 +1,7 @@
 package org.com.VerificationService.Handler.Interfaces;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.ClientAppPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.GetCostRequest;
-import org.com.VerificationService.Request.Requests.Receive.UpdateFCMToken;
+import org.com.VerificationService.Request.Requests.Receive.*;
 
 public interface Verifier
 {
@@ -14,4 +11,6 @@ public interface Verifier
     boolean execute(CallCenterPickupRequest request);
     boolean execute(GetCostRequest request);
     boolean execute(UpdateFCMToken request);
+    boolean execute(GetDirectionRequest request);
+    boolean execute(AcceptPickupRequest request);
 }

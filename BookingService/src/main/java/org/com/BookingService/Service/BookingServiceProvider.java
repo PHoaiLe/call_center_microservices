@@ -6,6 +6,7 @@ import org.com.BookingService.Requests.Constants.BookingRequestTypes;
 import org.com.BookingService.Requests.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.BookingService.Requests.RequestStrategy.RequestConverterHandler;
 import org.com.BookingService.Requests.RequestStrategy.RequestConverterStrategyProvider;
+import org.com.BookingService.Requests.Requests.Receive.AcceptPickupRequest;
 import org.com.BookingService.Requests.Requests.Receive.UpdateFCMToken;
 import org.com.BookingService.Service.FuntionInterfaces.GetRunnable_BytesParam_Function;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class BookingServiceProvider
     private void manualInitialize()
     {
         serviceProvider.put(BookingRequestTypes.UPDATE_FCM_TOKEN, updateFCMTokenRunnable);
+        serviceProvider.put(BookingRequestTypes.ACCEPT_PICKUP_REQUEST, acceptPickupRequestRunnable);
     }
 
     public void execute(BookingRequestWrapper wrapper)
@@ -94,6 +96,37 @@ public class BookingServiceProvider
             }
         };
 
+
+        return task;
+    };
+
+    private GetRunnable_BytesParam_Function acceptPickupRequestRunnable = (payload) ->
+    {
+        if(payload == null)
+        {
+            return null;
+        }
+
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                byte[] bytes = payload;
+                String requestType = BookingRequestTypes.ACCEPT_PICKUP_REQUEST;
+                RequestConverterStrategyProvider strategyProvider = new RequestConverterStrategyProvider();
+                RequestConverterStrategy requestConverterStrategy = strategyProvider.getRequestConverterStrategy(requestType);
+
+                RequestConverterHandler converterHandler = new RequestConverterHandler();
+                converterHandler.setStrategy(requestConverterStrategy);
+
+                AcceptPickupRequest request = (AcceptPickupRequest) converterHandler.fromBytesToObject(bytes);
+                System.out.println("after convert: "+ request);
+
+                FirebaseServices firebaseServices = new FirebaseServices();
+                boolean check = firebaseServices.addPickUpInfor(request);
+                System.out.println("after add booking object...");
+                System.out.println(check);
+            }
+        };
 
         return task;
     };

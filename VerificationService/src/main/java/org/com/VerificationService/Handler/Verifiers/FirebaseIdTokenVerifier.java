@@ -3,10 +3,7 @@ package org.com.VerificationService.Handler.Verifiers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import org.com.VerificationService.Handler.Interfaces.Verifier;
-import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.ClientAppPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.GetCostRequest;
-import org.com.VerificationService.Request.Requests.Receive.UpdateFCMToken;
+import org.com.VerificationService.Request.Requests.Receive.*;
 //
 //Firebase Authentication sessions are long lived.
 //Every time a user signs in, the user credentials are sent to the Firebase Authentication backend and exchanged for a Firebase ID token (a JWT) and refresh token.
@@ -87,6 +84,46 @@ public class FirebaseIdTokenVerifier implements Verifier
 
     @Override
     public boolean execute(UpdateFCMToken request) {
+        String idToken = request.getIdToken();
+        try
+        {
+            if(firebaseAuth.verifyIdToken(idToken) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean execute(GetDirectionRequest request) {
+        String idToken = request.getIdToken();
+        try
+        {
+            if(firebaseAuth.verifyIdToken(idToken) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean execute(AcceptPickupRequest request) {
         String idToken = request.getIdToken();
         try
         {

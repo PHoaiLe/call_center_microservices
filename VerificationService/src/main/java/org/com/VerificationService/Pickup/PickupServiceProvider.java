@@ -6,12 +6,12 @@ import org.com.VerificationService.Pickup.FunctionInterface.GetRunnable_BytesPar
 import org.com.VerificationService.Request.BookingRequestWrapper;
 import org.com.VerificationService.Request.Constants.BookingRequestTypes;
 import org.com.VerificationService.Request.Constants.RequestTypes;
+import org.com.VerificationService.Request.NotificationWrapper;
 import org.com.VerificationService.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
+import org.com.VerificationService.Request.RequestStrategy.RequestConverterHandler;
 import org.com.VerificationService.Request.RequestStrategy.RequestConverterStrategyProvider;
-import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.ClientAppPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.GetCostRequest;
-import org.com.VerificationService.Request.Requests.Receive.UpdateFCMToken;
+import org.com.VerificationService.Request.Requests.Receive.*;
+import org.com.VerificationService.Request.Requests.Send.BookingAcceptPickupRequest;
 import org.com.VerificationService.Request.Requests.Send.BookingUpdateFCMToken;
 import org.com.VerificationService.Request.Requests.Send.DriverPartitionRequest;
 import org.com.VerificationService.Request.Requests.Send.LocatingRequest;
@@ -36,6 +36,8 @@ public class PickupServiceProvider
     private KafkaTemplate<String, DriverPartitionRequest> driverPartitionRequestKafkaTemplate;
     @Autowired
     private KafkaTemplate<String, BookingRequestWrapper> bookingRequestWrapperKafkaTemplate;
+    @Autowired
+    private KafkaTemplate<String, NotificationWrapper> notificationWrapperKafkaTemplate;
 
     public PickupServiceProvider()
     {
@@ -63,6 +65,8 @@ public class PickupServiceProvider
         serviceProvider.put(RequestTypes.CALL_CENTER_NEW_PICK_UP_REQUEST, CallCenterRequestRunnable);
         serviceProvider.put(RequestTypes.GET_COST_REQUEST, GetCostRequestRunnable);
         serviceProvider.put(RequestTypes.UPDATE_FCM_TOKEN_REQUEST, GetUpdateFCMTokenRunnable);
+        serviceProvider.put(RequestTypes.GET_DIRECTION_REQUEST, GetDirectionRequestRunnable);
+        serviceProvider.put(RequestTypes.DRIVER_ACCEPT_PICKUP_REQUEST, GetAcceptPickupRequestRunnable);
     }
 
     public void execute(String requestType, byte[] payload)
@@ -252,5 +256,115 @@ public class PickupServiceProvider
         return task;
     };
 
-    
+    GetRunnable_BytesParam_Function GetDirectionRequestRunnable = (payload) ->
+    {
+        Runnable task = new Runnable()
+        {
+            @Override
+            public void run() {
+                byte[] bytes = payload;
+
+                String requestType = RequestTypes.GET_DIRECTION_REQUEST;
+                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
+
+                RequestConverterStrategyProvider strategyProvider = new RequestConverterStrategyProvider();
+                RequestConverterStrategy converterStrategy = strategyProvider.getRequestConverterStrategy(requestType);
+
+                RequestConverterHandler handler = new RequestConverterHandler();
+                handler.setStrategy(converterStrategy);
+
+                GetDirectionRequest request = (GetDirectionRequest) handler.fromBytesToObject(bytes);
+
+                //boolean check = verificationServiceProvider.getVerificationHandler().handle(request);
+                boolean check = true;
+
+                if(check)
+                {
+                    LocatingRequest locatingRequest = new LocatingRequest();
+                    locatingRequest.setUserId(request.getUserId());
+                    locatingRequest.setRequestType(request.getRequestType());
+                    locatingRequest.setEndAddress(request.getEndAddress());
+                    locatingRequest.setStartAddress(request.getStartAddress());
+
+                    locatingRequestKafkaTemplate.send(KafkaTopics.LOCATING, locatingRequest);
+                    System.out.println("after sending get-direction-request...");
+                }
+
+            }
+        };
+
+        return task;
+    };
+
+    private GetRunnable_BytesParam_Function GetAcceptPickupRequestRunnable = (payload) ->
+    {
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                byte[] bytes = payload;
+                String requestType = RequestTypes.DRIVER_ACCEPT_PICKUP_REQUEST;
+
+                VerificationServiceProvider verificationServiceProvider = new VerificationServiceProvider();
+
+                RequestConverterStrategyProvider strategyProvider = new RequestConverterStrategyProvider();
+                RequestConverterStrategy converterStrategy = strategyProvider.getRequestConverterStrategy(requestType);
+
+                RequestConverterHandler handler = new RequestConverterHandler();
+                handler.setStrategy(converterStrategy);
+
+                AcceptPickupRequest request = (AcceptPickupRequest) handler.fromBytesToObject(bytes);
+
+                //boolean check = verificationServiceProvider.getVerificationHandler().handle(request);
+                boolean check = true;
+
+                if(check)
+                {
+
+                    BookingAcceptPickupRequest bookingAcceptPickupRequest = new BookingAcceptPickupRequest();
+
+                    bookingAcceptPickupRequest.setUserId(request.getUserId());
+                    bookingAcceptPickupRequest.setPartnerId(request.getPartnerId());
+                    bookingAcceptPickupRequest.setRequestType(request.getRequestType());
+                    bookingAcceptPickupRequest.setCustomerName(request.getCustomerName());
+                    bookingAcceptPickupRequest.setStartLongitude(request.getStartLongitude());
+                    bookingAcceptPickupRequest.setStartLatitude(request.getStartLatitude());
+                    bookingAcceptPickupRequest.setEndLongitude(request.getEndLongitude());
+                    bookingAcceptPickupRequest.setEndLatitude(request.getEndLatitude());
+                    bookingAcceptPickupRequest.setStartAddress(request.getStartAddress());
+                    bookingAcceptPickupRequest.setEndAddress(request.getEndAddress());
+                    bookingAcceptPickupRequest.setDuration(request.getDuration());
+                    bookingAcceptPickupRequest.setDistance(request.getDistance());
+                    bookingAcceptPickupRequest.setCost(request.getCost());
+                    bookingAcceptPickupRequest.setVehicle(request.getVehicle());
+                    bookingAcceptPickupRequest.setPhone(request.getPhone());
+
+
+                    BookingRequestWrapper bookingRequestWrapper = new BookingRequestWrapper();
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    byte[] bookingWrapperPayload = null;
+                    try
+                    {
+                        bookingWrapperPayload = mapper.writeValueAsBytes(bookingAcceptPickupRequest);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.out.println(ex);
+                        return;
+                    }
+
+                    bookingRequestWrapper.setRequestType(BookingRequestTypes.ACCEPT_PICKUP_REQUEST);
+                    bookingRequestWrapper.setPayload(bookingWrapperPayload);
+
+                    bookingRequestWrapperKafkaTemplate.send(KafkaTopics.BOOKING, bookingRequestWrapper);
+                    System.out.println("after sending addBooking...");
+
+
+                }
+            }
+        };
+
+        return task;
+    };
+
 }

@@ -5,14 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.com.LocatingService.Kafka.Constants.KafkaTopics;
 import org.com.LocatingService.Kafka.Constants.VehicleTypes;
 import org.com.LocatingService.Request.*;
+import org.com.LocatingService.Request.Constants.NotificationTypes;
+import org.com.LocatingService.Request.Constants.RequestTypes;
 import org.com.LocatingService.Request.Receive.LocatingRequest;
 import org.com.LocatingService.Request.Send.GetCostNotification;
 import org.com.LocatingService.Request.Send.GetCostResponse;
+import org.com.LocatingService.Request.Send.GetDirectionDetailNotification;
 import org.com.LocatingService.Request.Send.InvalidLocationInfoNotification;
 import org.com.LocatingService.Utils.Cost.CostHandler;
 import org.example.locatingdependency.CallCenterLocatingService;
 import org.example.locatingdependency.LocatingPluginService;
 import org.example.locatingdependency.Objects.Coordinate.Coordinate;
+import org.example.locatingdependency.Objects.Direction.InnerParts.Geometry.Geometry;
 import org.example.locatingdependency.Objects.Direction.InnerParts.Properties.InnerProperties;
 import org.example.locatingdependency.Services.DirectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +45,17 @@ public class LocatingServiceProvider
     public void execute(LocatingRequest locatingRequest)
     {
         System.out.println("inside execute function");
-        Runnable task = notAvailableLocationInformation(locatingRequest);
+        Runnable task = null;
+        System.out.println(locatingRequest);
+        if(locatingRequest.getRequestType().equals(RequestTypes.GET_COST_REQUEST))
+        {
+            task = getCostRunnable(locatingRequest);
+        }
+        else if(locatingRequest.getRequestType().equals(RequestTypes.GET_DIRECTION_REQUEST))
+        {
+            task = getDirectionRunnable(locatingRequest);
+        }
+
         if(task == null)
         {
             return;
@@ -99,7 +113,7 @@ public class LocatingServiceProvider
 //        return task;
 //    }
 
-    private Runnable notAvailableLocationInformation(LocatingRequest locatingRequest)
+    private Runnable getCostRunnable(LocatingRequest locatingRequest)
     {
         if(locatingRequest == null)
         {
@@ -212,6 +226,51 @@ public class LocatingServiceProvider
             return null;
         }
         return bytes;
+    }
+
+
+    private Runnable getDirectionRunnable(LocatingRequest locatingRequest)
+    {
+        if(locatingRequest == null)
+        {
+            return null;
+        }
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("inside get direction task...");
+
+                Coordinate start = pluginService.getCoordinateFromAddress(locatingRequest.getStartAddress());
+                Coordinate end = pluginService.getCoordinateFromAddress(locatingRequest.getEndAddress());
+
+                Geometry geometry = pluginService.getDirectionDetail(DirectionService.BY_2_WHEELS, start, end);
+
+
+                GetDirectionDetailNotification notification = new GetDirectionDetailNotification();
+                notification.setUserId(locatingRequest.getUserId());
+                notification.setGeometry(geometry);
+                notification.setNotificationType(NotificationTypes.GET_DIRECTION_NOTIFICATION);
+
+                ObjectMapper mapper = new ObjectMapper();
+                byte[] payload = null;
+                try
+                {
+                    payload = mapper.writeValueAsBytes(notification);
+                }
+                catch (Exception ex)
+                {
+                    payload = null;
+                }
+
+                NotificationWrapper wrapper = new NotificationWrapper();
+                wrapper.setNotificationType(NotificationTypes.GET_DIRECTION_NOTIFICATION);
+                wrapper.setPayload(payload);
+                notificationWrapperKafkaTemplate.send(KafkaTopics.NOTIFICATION, wrapper);
+                System.out.println("after sending direction request to notification service...");
+            }
+        };
+
+        return task;
     }
 
 }

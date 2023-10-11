@@ -9,4 +9,6 @@ public class KafkaTopics
     public static final String LOCATING = "locating";
 
     public static final String BOOKING = "booking";
+
+    public static final String NOTIFICATION = "notification";
 }

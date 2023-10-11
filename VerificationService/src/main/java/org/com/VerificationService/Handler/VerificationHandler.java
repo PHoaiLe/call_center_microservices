@@ -1,10 +1,7 @@
 package org.com.VerificationService.Handler;
 
 import org.com.VerificationService.Handler.Interfaces.Verifier;
-import org.com.VerificationService.Request.Requests.Receive.CallCenterPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.ClientAppPickupRequest;
-import org.com.VerificationService.Request.Requests.Receive.GetCostRequest;
-import org.com.VerificationService.Request.Requests.Receive.UpdateFCMToken;
+import org.com.VerificationService.Request.Requests.Receive.*;
 
 public class VerificationHandler
 {
@@ -110,6 +107,50 @@ public class VerificationHandler
     }
 
     public boolean handle(UpdateFCMToken request)
+    {
+        boolean result = false;
+        if(verifier == null)
+        {
+            throw new NullPointerException(this.nullVerifier);
+        }
+        try
+        {
+            result = verifier.execute(request);
+            if(result == true && nextHandler != null)
+            {
+                return nextHandler.handle(request);
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return result;
+    }
+
+    public boolean handle(GetDirectionRequest request)
+    {
+        boolean result = false;
+        if(verifier == null)
+        {
+            throw new NullPointerException(this.nullVerifier);
+        }
+        try
+        {
+            result = verifier.execute(request);
+            if(result == true && nextHandler != null)
+            {
+                return nextHandler.handle(request);
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return result;
+    }
+
+    public boolean handle(AcceptPickupRequest request)
     {
         boolean result = false;
         if(verifier == null)

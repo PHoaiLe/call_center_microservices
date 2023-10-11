@@ -2,6 +2,7 @@ package org.com.Receiver.Pickup;
 
 import org.com.Receiver.Kafka.Constants.KafkaTopics;
 import org.com.Receiver.Request.ExternalRequests.*;
+import org.com.Receiver.Request.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.Receiver.Request.Requests.*;
 import org.com.Receiver.Request.RequestStrategy.RequestConverterHandler;
 import org.com.Receiver.Request.RequestWrapper;
@@ -116,8 +117,36 @@ public class PickupServices {
         }
 
         GetDirectionRequest directionRequest = new GetDirectionRequest(request);
+        RequestWrapper wrapper = new RequestWrapper();
 
+        RequestConverterHandler converterHandler = new RequestConverterHandler();
+        converterHandler.setGetDirectionRequestConverterStrategy();
 
+        wrapper.setRequestType(directionRequest.getRequestType());
+        wrapper.setPayload(converterHandler.fromObjectToBytes(directionRequest));
+
+        requestWrapperKafkaTemplate.send(KafkaTopics.DATA_ROOM, wrapper);
+        System.out.println("after sending get direction request...");
+    }
+
+    public void sendToDataRoom(ExternalAcceptPickupRequest request)
+    {
+        if(request == null)
+        {
+            return;
+        }
+
+        AcceptPickupRequest acceptPickupRequest = new AcceptPickupRequest(request);
+        RequestConverterHandler converterHandler = new RequestConverterHandler();
+        RequestWrapper wrapper = new RequestWrapper();
+
+        converterHandler.setAcceptPickupRequestConverterStrategy();
+
+        wrapper.setRequestType(acceptPickupRequest.getRequestType());
+        wrapper.setPayload(converterHandler.fromObjectToBytes(acceptPickupRequest));
+
+        requestWrapperKafkaTemplate.send(KafkaTopics.DATA_ROOM, wrapper);
+        System.out.println("after sending accept pickup request...");
 
     }
 

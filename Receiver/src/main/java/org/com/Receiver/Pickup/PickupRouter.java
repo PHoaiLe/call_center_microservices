@@ -37,7 +37,7 @@ public class PickupRouter {
 
     @PostMapping(value = "/cost",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-                    MediaType.MULTIPART_FORM_DATA_VALUE})
+                    MediaType.MULTIPART_FORM_DATA_VALUE,})
     public boolean getCost(ExternalGetCostRequest request)
     {
         System.out.println("Get cost: "+request);
@@ -68,9 +68,10 @@ public class PickupRouter {
     @PostMapping(value = "/driver/accept",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE})
-    public boolean acceptPickupRequest(AcceptPickupRequest acceptPickupRequest)
+    public boolean acceptPickupRequest(ExternalAcceptPickupRequest acceptPickupRequest)
     {
         System.out.println(acceptPickupRequest);
+        pickupServices.sendToDataRoom(acceptPickupRequest);
         return true;
     }
 
@@ -90,7 +91,7 @@ public class PickupRouter {
     public boolean getDirection(ExternalGetDirectionRequest request)
     {
         System.out.println("Direction request: " + request);
-
+        pickupServices.sendToDataRoom(request);
         return true;
     }
 }

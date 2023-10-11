@@ -7,5 +7,6 @@ public class RequestTypes
     public static final String UPDATE_FCM_TOKEN_REQUEST = "AAAAAA03";
     public static final String GET_COST_REQUEST = "AAAAAA04";
     public static final String GET_DIRECTION_REQUEST = "AAAAAA05";
+    public static final String DRIVER_ACCEPT_PICKUP_REQUEST = "AAAAAA06";
 
 }

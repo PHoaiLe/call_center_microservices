@@ -27,5 +27,9 @@ public class KafkaTopicConfig
     {
         return TopicBuilder.name(KafkaTopics.BOOKING).build();
     }
+    public NewTopic Notification()
+    {
+        return TopicBuilder.name(KafkaTopics.NOTIFICATION).build();
+    }
 
 }

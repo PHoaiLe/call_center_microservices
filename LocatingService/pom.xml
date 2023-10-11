@@ -36,9 +36,9 @@
         <dependency>
             <groupId>org.com.locatingdependency</groupId>
             <artifactId>CallCenterLocatingService</artifactId>
-            <version>1.8.1</version>
+            <version>1.9.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/src/main/java/lib/CallCenterLocatingService-1.8.1.jar</systemPath>
+            <systemPath>${basedir}/src/main/java/lib/CallCenterLocatingService-1.9.2.jar</systemPath>
         </dependency>
     </dependencies>
 

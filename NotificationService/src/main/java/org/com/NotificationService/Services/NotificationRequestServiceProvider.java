@@ -1,12 +1,14 @@
 package org.com.NotificationService.Services;
 
 import org.com.NotificationService.Firebase.Notification.FirebaseFCMService;
+import org.com.NotificationService.Requests.Constants.NotificationAttributes;
 import org.com.NotificationService.Requests.Constants.NotificationTypes;
 import org.com.NotificationService.Requests.NotificationWrapper;
 import org.com.NotificationService.Requests.RequestStrategy.Interfaces.RequestConverterStrategy;
 import org.com.NotificationService.Requests.RequestStrategy.NotificationRequestConverterHandler;
 import org.com.NotificationService.Requests.RequestStrategy.NotificationRequestConverterProvider;
 import org.com.NotificationService.Requests.Requests.GetCostNotification;
+import org.com.NotificationService.Requests.Requests.GetDirectionNotification;
 import org.com.NotificationService.Services.FunctionInterface.GetRunnable_BytesParam_Function;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,7 @@ public class NotificationRequestServiceProvider
     private void manualInitialization()
     {
         serviceProvider.put(NotificationTypes.GET_COST_NOTIFICATION_REQUEST, getCostNotificationTask);
+        serviceProvider.put(NotificationTypes.GET_DIRECTION_NOTIFICATION, GetDirectionNotificationRunnable);
     }
 
     public void execute(NotificationWrapper wrapper)
@@ -96,5 +99,35 @@ public class NotificationRequestServiceProvider
           };
 
           return task;
+    };
+
+    GetRunnable_BytesParam_Function GetDirectionNotificationRunnable = (payload) ->
+    {
+        if(payload == null)
+        {
+            return null;
+        }
+
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                byte[] bytes = payload;
+                String requestType = NotificationTypes.GET_DIRECTION_NOTIFICATION;
+                NotificationRequestConverterProvider converterProvider = new NotificationRequestConverterProvider();
+                RequestConverterStrategy strategy = converterProvider.getRequestConverterStrategy(requestType);
+
+                NotificationRequestConverterHandler handler = new NotificationRequestConverterHandler();
+                handler.setStrategy(strategy);
+
+                GetDirectionNotification notification = (GetDirectionNotification) handler.fromBytesToObject(bytes);
+                System.out.println(notification);
+
+                FirebaseFCMService service = new FirebaseFCMService();
+                String response = service.sendMessageToDevice(notification);
+                System.out.println("after sending, response: " + response);
+            }
+        };
+
+        return task;
     };
 }
